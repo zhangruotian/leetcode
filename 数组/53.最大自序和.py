@@ -16,4 +16,16 @@ class Solution:
 # 2. 找到出口。OPT(0)=nums[0]
 # 3. 动态规划:用list记录OPT(0)---OPT(n)
 # 4. return list的最大值
-# O(n)
+# 时间复杂度O(n)，空间复杂度O(n)
+
+# 由转移方程可知: OPT(i)只与OPT(i-1)有关，因此不需要用list记录OPT(0)---OPT(n),用一个variable交替计算即可.
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        a=nums[0]
+        max_value=a
+        for i in range(1,len(nums)):
+            a = max(nums[i],nums[i]+a)
+            if a>max_value:
+                max_value=a
+        return max_value
+# 空间复杂度O(1)
