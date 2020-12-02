@@ -17,5 +17,5 @@ class Solution:
             B= f[i-1]
             f[i]=max(A,B)
         return f[len(nums)-1]
-# 但是此转移方程与斐波那契数列相似，f(i)只与f(i-1)与f(i-2)有关，因此不需要用list记录所有的f(i)，用两个variable依次交替便可。
+# 但是此转移方程与斐波那契数列相似，f(i)只与f(i-1)与f(i-2)有关，且最后结果至于f(n)有关。因此不需要用list记录所有的f(i)，用两个variable依次交替便可。
 # 空间复杂度由O(n)---> O(1)

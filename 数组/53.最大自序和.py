@@ -18,7 +18,7 @@ class Solution:
 # 4. return list的最大值
 # 时间复杂度O(n)，空间复杂度O(n)
 
-# 由转移方程可知: OPT(i)只与OPT(i-1)有关，因此不需要用list记录OPT(0)---OPT(n),用一个variable交替计算即可.
+# 由转移方程可知: OPT(i)只与OPT(i-1)有关，并且最后结果不需要用到所有OPT(i),因此不需要用list记录OPT(0)---OPT(n),用一个variable交替计算即可.
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         a=nums[0]
