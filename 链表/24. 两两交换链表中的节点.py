@@ -18,3 +18,6 @@ class Solution:
             pre=cur
             cur=next_next
         return dummy_head.next
+        
+# 虚拟头结点
+# 定义pre cur next next_next
