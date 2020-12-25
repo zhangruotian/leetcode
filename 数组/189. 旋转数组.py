@@ -3,9 +3,8 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
+        k=k%len(nums)
         self.reverse(nums,0,len(nums)-1)
-        if k>len(nums)-1:
-            k=k%len(nums)
         self.reverse(nums,0,k-1)
         self.reverse(nums,k,len(nums)-1)
     
