@@ -18,6 +18,6 @@ class Solution:
             pre=cur
             cur=next_next
         return dummy_head.next
-        
+# ！！！！！！！！！！！！！！反转链表套路：        
 # 虚拟头结点
-# 定义pre cur next next_next
+# 在循环外定义pre cur，在循环内求next和next_next(如果有需要)，这样就可以cur and cur.next作为判断while条件

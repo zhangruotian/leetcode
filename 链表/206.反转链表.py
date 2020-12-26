@@ -17,4 +17,6 @@ class Solution:
         
         
         
-# 定义current。使用head迭代再无法找到头节点
+# ！！！！！！！！！！！！！！反转链表套路：        
+# 虚拟头结点
+# 在循环外定义pre cur，在循环内求next和next_next(如果有需要)，这样就可以cur and cur.next作为判断while条件
