@@ -34,7 +34,7 @@ class Solution:
             return 0
 
 # 利用完全二叉树的条件
-# T:O(logn*logn)
+# T:O(logn*logn) #完全二叉树中，最后一层的最后一个叶子结点要么在左子树，要么在右自树上，这就说明左右子数至少有一棵是满的完全二叉树。
 # S:O(logn)
 # https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/222-pu-tong-er-cha-shu-yu-wan-quan-er-cha-shu-qi-2/
 
