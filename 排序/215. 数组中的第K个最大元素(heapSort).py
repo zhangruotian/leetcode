@@ -57,5 +57,7 @@ class Solution:
             nums[max_index],nums[i]=nums[i],nums[max_index]
             self.heapify(max_index,l,nums)
 #改进版，因为只需第k大，所以heap中大的数往后放时只需放k次，无需把整个nums都排序。
+#时间复杂度：O(nlogn)，建堆的时间代价是 O(n)，删除的总代价是O(klogn)，因为 k < n，故渐进时间复杂为 O(n+klogn)=O(nlogn)。
+
 
 
