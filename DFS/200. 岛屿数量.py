@@ -21,3 +21,5 @@ class Solution:
 
 # 题型：DFS，不回溯  T:O(mn)
 # DFS题，记得写终止条件。 return 代表结束本层递归函数，在上层看来就是结束了一行 比如self.dfs(grid,x+1,y,h,w)， 可以接着运行下一行了
+# 终止条件怎么写：搜索到什么样的位置结束就怎么写。比如二叉树，搜索到None的位置结束，那就写 if not root: return。 
+# 本题：搜索的'0'的位置结束，那就写 if _ is '0':return 
