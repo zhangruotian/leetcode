@@ -25,3 +25,13 @@ class Solution:
         
         return res + self.spiralOrder(new_matrix)
 # 分治
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        res=[]
+        while matrix:
+            res+=matrix[0]
+            matrix=matrix[1:]
+            matrix=list(map(list,zip(*matrix)))[::-1]
+        return res
+# python 内置
