@@ -9,9 +9,9 @@ class Solution:
         s=start+1
         e=end
         while True:
-            while s<e and nums[s]<nums[pi]:
+            while s<e and nums[s]<nums[pi]:   #while s<=end and nums[s]<=pivot:
                 s+=1
-            while s<=e and nums[e]>=nums[pi]:
+            while s<=e and nums[e]>=nums[pi]:  #while e>0 and nums[e]>pivot:
                 e-=1
             if s<e:
                 nums[s],nums[e]=nums[e],nums[s]
