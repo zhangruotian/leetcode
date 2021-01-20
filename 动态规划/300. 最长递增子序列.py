@@ -40,3 +40,5 @@ class Solution:
 
 # lower_bound: [1,3,5]中找4，则返回5。找3,返回3.
 # upper_bound: [1,3,5]中找4，则返回5。找3,返回5.
+
+# T:O(nlog(n)) S:O(n)
