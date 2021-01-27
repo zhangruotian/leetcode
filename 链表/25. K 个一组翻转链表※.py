@@ -37,4 +37,20 @@ class Solution:
             pre=cur
             cur=next
         return pre,sub_head
-        
+# sh        st       
+# 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> None
+#cur
+# tail=dummy_node
+# new_head,new_tail=reverse(sh,st)
+# count
+
+
+
+
+
+
+
+
+
+
+
