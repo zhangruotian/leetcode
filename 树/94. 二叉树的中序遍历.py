@@ -27,4 +27,5 @@ class Solution:
         return res
 # iterative
 # https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/dong-hua-yan-shi-94-er-cha-shu-de-zhong-xu-bian-li/        
- 
+
+# 中序 前序 后序 层序 遍历，dfs和iterative模板: https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/python3-er-cha-shu-suo-you-bian-li-mo-ban-ji-zhi-s/
