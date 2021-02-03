@@ -1,26 +1,20 @@
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
-        res=''
-        if len(num1)>len(num2):
-            num2='0'*(len(num1)-len(num2))+num2
-        if len(num2)>len(num1):
-            num1='0'*(len(num2)-len(num1))+num1
-        pointer=len(num1)-1
-        add=0
-        while pointer>0:
-            n1=int(num1[pointer])
-            n2=int(num2[pointer])
-            pointer-=1
-            summation=n1+n2+add
-            if summation>9:
-                add=1
-                res+=str(summation-10)
+        # 99      12
+        #999     345
+        i,j,res,add_one=len(num1)-1,len(num2)-1,'',0
+        while i>-1 or j>-1:
+            n1=ord(num1[i])-ord('0') if i>-1 else 0
+            n2=ord(num2[j])-ord('0') if j>-1 else 0
+            add=n1+n2+add_one
+            if add>9:
+                add_one=1
+                res=str(add-10)+res
             else:
-                add=0
-                res+=str(summation)
-        if int(num1[0])+int(num2[0])+add>9:
-            res+=(str(int(num1[0])+int(num2[0])+add-10))+'1'
-        else:
-            res+=str(int(num1[0])+int(num2[0])+add)
-
-        return res[::-1]
+                add_one=0
+                res=str(add)+res
+            i-=1
+            j-=1
+        if add_one:
+            res='1'+res
+        return res
