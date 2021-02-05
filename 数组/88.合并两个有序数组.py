@@ -24,3 +24,26 @@ class Solution:
 # 合并两个《有序数组》并得到有序数组，考虑双指针
 # 时间复杂度O(m+n)
 # 空间复杂度O(m)
+
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        p1=m-1
+        p2=n-1
+        p=m+n-1
+        while p1>=0 and p2>=0:
+            if nums1[p1]>=nums2[p2]:
+                nums1[p]=nums1[p1]
+                p1-=1
+            else:
+                nums1[p]=nums2[p2]
+                p2-=1
+            p-=1
+        nums1[:p2+1]=nums2[:p2+1]
+# 定义三个指针，一个p1指向nums1的第m-1 ，一个p2指向nums2的第n-1，一个p指nums1的最后
+# 那个大就添加到p
+# 某个到了-1就把另一个的剩余添加到nums1
+# O(m+n)
+# O(1)
