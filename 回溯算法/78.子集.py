@@ -25,6 +25,7 @@ class Solution:
             res.append([num])
         res.append([])
         return res
+# dynamic programming
 # 直接从后遍历，遇到一个数就把所有子集加上该数组成新的子集，遍历完毕即是所有子集
 
 class Solution:
@@ -41,4 +42,4 @@ class Solution:
         new_list+=original_list
 
         return new_list
-#分治
+#divide and conquer
