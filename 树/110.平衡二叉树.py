@@ -35,6 +35,7 @@ class Solution:
         r=self.getHeight(root.right)
         if r==-1:return -1
         return max(l,r)+1 if abs(l-r)<=1 else -1
+# 最优解
 # 如果左子树已经返回-1了就不需要再递归右子树了，直接返回-1就可以。<O(N)
 
 class Solution:
