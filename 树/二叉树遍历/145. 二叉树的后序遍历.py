@@ -14,6 +14,19 @@ class Solution:
 class Solution:
     def postorderTraversal(self, root: TreeNode) -> List[int]:
         res=[]
+        self.dfs(root,res)
+        return res
+    
+    def dfs(self,root,res):
+        if not root:return
+        self.dfs(root.left,res)
+        self.dfs(root.right,res)
+        res.append(root.val)
+# dfs
+
+class Solution:
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        res=[]
         stack=[]
         cur=root
         while stack or cur:

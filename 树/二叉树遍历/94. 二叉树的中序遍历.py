@@ -15,6 +15,19 @@ class Solution:
 class Solution:
     def inorderTraversal(self, root: TreeNode) -> List[int]:
         res=[]
+        self.dfs(root,res)
+        return res
+    
+    def dfs(self,root,res):
+        if not root:return
+        self.dfs(root.left,res)
+        res.append(root.val)
+        self.dfs(root.right,res)
+#dfs
+
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        res=[]
         stack=[]
         while stack or root:
             if root:
