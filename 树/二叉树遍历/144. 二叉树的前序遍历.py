@@ -14,6 +14,18 @@ class Solution:
 class Solution:
     def preorderTraversal(self, root: TreeNode) -> List[int]:
         res=[]
+        self.dfs(root,res)
+        return res
+    def dfs(self,root,res):
+        if not root:return
+        res.append(root.val)
+        self.dfs(root.left,res)
+        self.dfs(root.right,res)
+# dfs 前序遍历与 dfs访问顺序一致
+
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        res=[]
         stack=[]
         cur=root
         while stack or cur:
