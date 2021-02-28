@@ -26,6 +26,7 @@ class Solution:
             root.left=self.prev
         self.prev=root
         self.dfs(root.right)
+# https://leetcode-cn.com/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/
 #利用全局变量记录状态
 a=True
 def abc(a):
