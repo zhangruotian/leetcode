@@ -26,3 +26,19 @@ class Solution:
 #visited过的跳过
 #l[n]==l[n-1]且没有visited过的跳过，防止重复
 #如果先出现')'是错误的，直接return
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res=[]
+        self.helper(res,n,n,'')
+        return res
+    
+    def helper(self,res,l,r,item):
+        if l>r:return
+        if l==0 and r==0:
+            res.append(item)
+        if l:
+            self.helper(res,l-1,r,item+'(')
+        if r:
+            self.helper(res,l,r-1,item+')')
+#https://www.youtube.com/watch?v=XF0wh8M2A6E
