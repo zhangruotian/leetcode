@@ -18,8 +18,6 @@ class Solution:
                 res=res*x
             abs_n=abs_n//2
             x=x*x
-        if n<0:
-            return 1/res
-        return res
+        return 1/res if res<0 else res
         
 # 迭代 T:O(logn) S:O(1)
