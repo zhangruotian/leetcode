@@ -3,6 +3,8 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+# 模拟
 class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
         dummy_node=ListNode(0)
@@ -43,6 +45,41 @@ class Solution:
 # tail=dummy_node
 # new_head,new_tail=reverse(sh,st)
 # count
+
+#头插法
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        dummy_head=ListNode()
+        dummy_head.next=head
+        prev=dummy_head
+        cur=head
+        while True:
+            if self.greaterOrEqualThanK(prev,k):
+                prev,cur=self.helper(prev,cur,k-1)
+            else:
+                return dummy_head.next
+
+    def helper(self,prev,cur,t):
+        # 头插
+        for _ in range(t):
+            next=cur.next
+            cur.next=next.next
+            next.next=prev.next
+            prev.next=next
+        prev=cur
+        cur=cur.next
+        return prev,cur
+    
+    def greaterOrEqualThanK(self,prev,k):
+        #判断是否还需要反转
+        prev=prev.next
+        for _ in range(k):
+            if not prev:return False
+            prev=prev.next
+        return True
+        
+        
+
 
 
 
