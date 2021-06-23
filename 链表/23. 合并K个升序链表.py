@@ -24,3 +24,35 @@ class Solution:
 # k组，每组n个。T:O(nklogk) 
 # 暴力算法T:O(nkk)
 # 用heap把k->logk
+
+
+# 猴子补丁
+# 几个方法： list=[] heapq.heappush(list,node) list为空，一个个添加 nlog(n)
+# popped_node=heapq.heappop(list)
+# heapq.heapify(list) list为初始列表，直接原地heapify  O(n)
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        if not lists or lists==[None]*len(lists): return None
+        def __lt__(self,other):
+            return self.val<other.val
+        ListNode.__lt__=__lt__
+
+        import heapq
+        heap=[]
+        for node in lists:
+            if node:
+                heapq.heappush(heap,node)
+        dummy_head=ListNode()
+        cur=dummy_head
+
+        while heap:
+            popped=heapq.heappop(heap)
+            next=popped.next
+            popped.next=None
+            cur.next=popped
+            cur=cur.next
+            if next:
+                heapq.heappush(heap,next)
+        return dummy_head.next
+        
+        
