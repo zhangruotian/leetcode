@@ -20,3 +20,22 @@ class Solution:
         if not l2:
             cur.next=l1
         return prehead.next
+
+# recursion
+# list1[0]+merge(list1[1:],list2)  if list1[0]<list2[0]
+# list2[0]+merge(list1,list2[1:])  otherwise
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+
+        if l1.val<=l2.val:
+            merged=self.mergeTwoLists(l1.next,l2)
+            l1.next=merged
+            return l1
+        else:
+            merged=self.mergeTwoLists(l1,l2.next)
+            l2.next=merged
+            return l2
