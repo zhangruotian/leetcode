@@ -26,7 +26,7 @@ class Solution:
 
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
-        return False if self.getHeight(root)==-1 else True
+        return self.getHeight(root)>=0
 
     def getHeight(self,root):
         if not root:return 0
