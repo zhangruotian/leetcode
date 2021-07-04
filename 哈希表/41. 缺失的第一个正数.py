@@ -7,6 +7,7 @@ class Solution:
             # while是因为交换过来的数依然不在正确位置，继续交换
             # nums[i]!=nums[nums[i]-1] 已经处在正确位置就不交换
             while 1 <= nums[i] <= n and nums[i]!=nums[nums[i]-1]:
+                #注意交换代码前后顺序
                 nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
         for i in range(n):
             if nums[i]!=i+1:
@@ -19,3 +20,12 @@ class Solution:
 # 我们要把每nums的每个数放到正确的位置
 # hash function: nums[i]-1，例如 3需要放到index为2的位置
 # 最后检验却哪个即可
+
+#nums[1],nums[2]=nums[2],nums[1]
+#过程：先生成(nums[2],nums[1])元祖，再解包. nums[1]=nums[2]  nums[2]=nums[1]
+#与nums[2],nums[1]=nums[1],nums[2]相同
+
+#此题中之能使用 nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+#若 使用nums[i],nums[nums[i]-1]=nums[nums[i]-1],nums[i]则会出错
+#生成元祖后 nums[i]=nums[nums[i]-1] 
+# nums[nums[i]-1]中的nums[i]已经与原来不同，因为结果错误
