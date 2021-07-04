@@ -35,15 +35,20 @@ class Solution:
 
 
 class Solution:
-    max_val=float('-inf')
+    #.  4
+    #  3 5
+    # 1 2
     def isValidBST(self, root: TreeNode) -> bool:
-        if not root:
-            return True
-        left=self.isValidBST(root.left)
-        if self.max_val<root.val:
-            self.max_val=root.val
-        else:
+        self.min_val=float(-inf)
+        return self.dfs(root)
+    
+    def dfs(self,root):
+        if not root: return True
+        if not self.dfs(root.left):
             return False
-        right=self.isValidBST(root.right)
-        return left and right
+        if self.min_val>=root.val:
+            return False
+        self.min_val=root.val
+        return self.dfs(root.right)
+#剪枝
 # BST中序遍历后是sorted. 
