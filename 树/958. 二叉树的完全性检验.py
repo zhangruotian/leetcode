@@ -29,3 +29,21 @@ class Solution:
                     q.append(right)
         return True
 # 利用层序遍历，如果遇到None，标记meet_node=True 后面如果遇到不是None的而且meet_node=True，则不是完备二叉树
+
+#用list代码简单
+class Solution:
+    def isCompleteTree(self, root: TreeNode) -> bool:
+        cur=[root]
+        hasNone=False
+        while cur:
+            next=[]
+            for node in cur:
+                if hasNone and node:
+                    return False
+                if not node:
+                    hasNone=True
+                    continue
+                next.append(node.left)
+                next.append(node.right)
+            cur=next
+        return True
