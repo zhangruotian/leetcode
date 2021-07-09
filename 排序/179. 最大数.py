@@ -30,3 +30,38 @@ class Solution:
 #如果需要改变排序规则，比如本题。需要functools.com_to_key。定义
 #一个比较方程compare,然后list.sort(key=com_to_key(compare))
 #定义compare()，返回1或-1.
+
+#定义compare(),quicksort
+class Solution:
+    def largestNumber(self, nums: List[int]) -> str:
+        self.quickSort(nums,0,len(nums)-1)
+        res=''
+        for num in nums:
+            res+=str(num)
+        return str(int(res))
+    
+    @staticmethod
+    def cmp(num1,num2):
+        s1,s2=str(num1),str(num2)
+        return int(s1+s2)<=int(s2+s1)
+
+    def partition(self,nums,start,end):
+        pivot=nums[start]
+        l,r=start+1,end
+        while True:
+            while l<=end and Solution.cmp(pivot,nums[l]):
+                l+=1
+            while r>0 and not Solution.cmp(pivot,nums[r]):
+                r-=1
+            if l<r:
+                nums[l],nums[r]=nums[r],nums[l]
+            else:
+                nums[start],nums[r]=nums[r],nums[start]
+                break
+        return r
+    def quickSort(self,nums,start,end):
+        if start>=end:
+            return 
+        m=self.partition(nums,start,end)
+        self.quickSort(nums,start,m-1)
+        self.quickSort(nums,m+1,end)
