@@ -77,6 +77,29 @@ class Solution:
             if not prev:return False
             prev=prev.next
         return True
+
+# 改编题：不足k也翻转
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        dummy_head=ListNode()
+        dummy_head.next=head
+        prev=dummy_head
+        cur=head
+        while True:
+            prev,cur=self.helper(prev,cur,k)
+            if not cur:
+                return dummy_head.next
+    
+    def helper(self,prev,cur,k):
+        for _ in range(k-1):
+            next=cur.next
+            if not next:
+                return None,None
+            cur.next=next.next
+            next.next=prev.next
+            prev.next=next
+        
+        return cur,cur.next
         
         
 
