@@ -40,3 +40,22 @@ class Solution:
         self.DFS(root.right,level+1,res)
         
 # BFS DFS 都是T:O(n) S:O(n)
+
+
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:return []
+        q=deque([root])
+        res=[]
+        while q:
+            level=[]
+            for _ in range(len(q)):
+                popped=q.popleft()
+                level.append(popped.val)
+                if popped.left:
+                    q.append(popped.left)
+                if popped.right:
+                    q.append(popped.right)
+            res.append(level)
+        return res
+# BFS using deque()
