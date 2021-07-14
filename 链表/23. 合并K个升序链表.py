@@ -54,5 +54,46 @@ class Solution:
             if next:
                 heapq.heappush(heap,next)
         return dummy_head.next
+
+
+#手动heapify和pop
+#如果堆顶的node有next，则lists[0]=node.next   heapify(lists,0,l)
+#如果堆顶的node无next，则交换头尾node，把尾pop。 heapify(lists,0,l-1)
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        lists=[node for node in lists if node]
+        l=len(lists)
+        for i in range(l//2-1,-1,-1):
+            self.heapify(lists,i,l)
+        dummy_head=ListNode()
+        cur=dummy_head
+        while lists:
+            top=lists[0]
+            cur.next=top
+            cur=cur.next
+            next=top.next
+            if next:
+                lists[0]=next
+                self.heapify(lists,0,l)
+            else:
+                lists[0],lists[l-1]=lists[l-1],lists[0]
+                lists.pop()
+                if not lists:
+                    break
+                l-=1
+                self.heapify(lists,0,l)
+        return dummy_head.next
+
+    def heapify(self,lists,i,l):
+        left=2*i+1
+        right=2*i+2
+        min_index=i 
+        if left<l and lists[min_index].val>lists[left].val:
+            min_index=left
+        if right<l and lists[min_index].val>lists[right].val:
+            min_index=right
+        lists[min_index],lists[i]=lists[i],lists[min_index]
+        if i!=min_index:
+            self.heapify(lists,min_index,l)
         
         
