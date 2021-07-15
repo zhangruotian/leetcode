@@ -18,3 +18,14 @@ class Solution:
         root.right=self.buildTree(preorder[1+index:],inorder[index+1:])
         return root
  # preorder的第一个是root。在inorder中，root左边的是root.left，右边同理。分治递归即可。
+
+
+ #followup: 给前序和中序，输出后序
+ class Solution:
+     def getPostOrder(self,preorder,inorder):
+            if not preorder: return []
+            root_val=preorder[0]
+            index=inorder.index(root_val)
+            l=self.getPostOrder(preorder[1:index+1],inorder[:index])
+            r=self.getPostOrder(preorder[index+1:],inorder[index+1:])
+            return l+r+[root_val]
