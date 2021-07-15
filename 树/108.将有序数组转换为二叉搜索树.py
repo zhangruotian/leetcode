@@ -16,3 +16,6 @@ class Solution:
         root.left=self.sortedArrayToBST(nums[l:m])
         root.right=self.sortedArrayToBST(nums[m+1:r])
         return root
+
+# followup 随机数组，生成相应的二叉搜索树
+# 先sort再生成树即可
