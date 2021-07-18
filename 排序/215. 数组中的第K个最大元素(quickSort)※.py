@@ -102,3 +102,29 @@ class Solution:
 # 运行时间由1600ms变为200ms。
 
 
+
+#另外两种partition写法
+
+#以end为pivot，最简单代码
+def partition(self,nums,start,end):
+    pivot=nums[end]
+    pIndex=start
+    for i in range(start,end):
+        if nums[i]<pivot:
+            nums[i],nums[pIndex]=nums[pIndex],nums[i]
+            pIndex+=1
+    nums[end],nums[pIndex]=nums[pIndex],nums[end]
+    return pIndex
+
+#以start为pivot，用在链表的快排
+def partition(self,nums,start,end):
+        pivot=nums[start]
+        pIndex=start+1
+        for i in range(start+1,end+1):
+            if nums[i]<pivot:
+                nums[i],nums[pIndex]=nums[pIndex],nums[i]
+                pIndex+=1
+        nums[start],nums[pIndex-1]=nums[pIndex-1],nums[start]
+        return pIndex-1
+
+
