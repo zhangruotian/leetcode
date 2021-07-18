@@ -3,6 +3,36 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+
+#quickSort超时
+class Solution:
+    def sortList(self, head: ListNode) -> ListNode:
+        return self.quickSort(head,None)
+
+    def partition(self,start,end):
+        head,tail=start,start
+        cur=start.next
+        while cur is not end:
+            next=cur.next
+            if cur.val<start.val:
+                cur.next=head
+                head=cur
+            else:
+                tail.next=cur
+                tail=cur
+            cur=next
+        tail.next=end
+        return head,start
+
+    def quickSort(self,start,end):
+        if start is end:
+            return start
+        s,m=self.partition(start,end)
+        head=self.quickSort(s,m)
+        m.next=self.quickSort(m.next,end)
+        return head
+
+# merge sort  T:O(nlogn) S:O(logn)
 class Solution:
     def sortList(self, head: ListNode) -> ListNode:
         return self.mergeSort(head)
@@ -39,9 +69,9 @@ class Solution:
         new_head1=self.mergeSort(head1)
         new_head2=self.mergeSort(head2)
         return self.merge(new_head1,new_head2)
-# merge sort  T:O(nlogn) S:O(logn)
 
 
+# bottom-up T:O(nlogn) S:O(1)
 class Solution:
     def sortList(self, head: ListNode) -> ListNode:
         if not head or not head.next:
@@ -99,4 +129,3 @@ class Solution:
         second=head.next
         head.next=None
         return second
-# bottom-up T:O(nlogn) S:O(1)
