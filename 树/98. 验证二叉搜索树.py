@@ -5,36 +5,6 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def isValidBST(self, root: TreeNode) -> bool:
-        if not root:
-            return True
-        if not root.left and not root.right:
-            return True
-        if not root.left:
-            return self.isValidBST(root.right) and self.findMin(root.right) > root.val
-        if not root.right:
-            return self.isValidBST(root.left) and self.findMax(root.left)<root.val
-        if self.isValidBST(root.left) and self.isValidBST(root.right):
-            return self.findMax(root.left) < root.val and self.findMin(root.right) > root.val
-        return False
-
-    def findMax(self, root):
-        if not root:
-            return
-        while root.right:
-            root = root.right
-        return root.val
-
-    def findMin(self, root):
-        if not root:
-            return
-        while root.left:
-            root = root.left
-        return root.val
-# 根据定义
-
-
-class Solution:
     #.  4
     #  3 5
     # 1 2
@@ -52,3 +22,21 @@ class Solution:
         return self.dfs(root.right)
 #剪枝
 # BST中序遍历后是sorted. 
+
+#iteration
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        max_val=float(-inf)
+        stack=[]
+        cur=root
+        while stack or cur:
+            if cur:
+                stack.append(cur)
+                cur=cur.left
+            else:
+                tmp=stack.pop()
+                if tmp.val<=max_val:
+                    return False
+                max_val=tmp.val
+                cur=tmp.right
+        return True 
