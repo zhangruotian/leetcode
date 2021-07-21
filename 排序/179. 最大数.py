@@ -38,8 +38,7 @@ class Solution:
         res=''
         for num in nums:
             res+=str(num)
-        return str(int(res))
-    
+        return '0' if res[0]=='0' else res    
     @staticmethod
     def cmp(num1,num2):
         s1,s2=str(num1),str(num2)
