@@ -30,3 +30,19 @@ class Solution:
         last_odd.next=even_head
         return odd_head
 # 初始化odd_head和even_head往后添加即可
+
+#头插
+class Solution:
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+        prev=head
+        cur=head.next
+        while cur and cur.next:
+            next=cur.next
+            cur.next=next.next
+            next.next=prev.next
+            prev.next=next
+            prev=prev.next
+            cur=cur.next
+        return head

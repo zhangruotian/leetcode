@@ -11,3 +11,4 @@ class Solution:
 #dp[i]=min(dp[i-1],dp[i-2],dp[i-3])+1
 #实现方式
 #i-coin<0的跳过
+ # [2,4]  0,inf,1,
