@@ -22,3 +22,19 @@ class Solution:
 
 #找到后停止递归，return
 #注意有的test case return的结果是0，因此不能写if l:  而是if l!=None.
+
+#迭代
+class Solution:
+    def kthSmallest(self, root: TreeNode, k: int) -> int:
+        cnt=0
+        stack,cur=[],root
+        while cur or stack:
+            if cur:
+                stack.append(cur)
+                cur=cur.left
+            else:
+                tmp=stack.pop()
+                cnt+=1
+                if cnt==k:
+                    return tmp.val
+                cur=tmp.right
