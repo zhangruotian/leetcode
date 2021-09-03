@@ -67,3 +67,19 @@ class Solution:
                 res[0]=path[:]
             self.dfs(nums,res,path,i+1)
             path.pop()
+
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        res,path=[[]],[]
+        self.dfs(nums,res,path,0)
+        return len(res[0])
+    
+    def dfs(self,nums,res,path,index):
+        if len(path)>len(res[0]):
+            res[0]=path[:]
+        for i in range(index,len(nums)):
+            if path and nums[i]<=path[-1]:
+                continue
+            path.append(nums[i])
+            self.dfs(nums,res,path,i+1)
+            path.pop()
