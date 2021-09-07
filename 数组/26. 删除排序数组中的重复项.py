@@ -12,3 +12,4 @@ class Solution:
                 j+=1
                 res+=1
          return res+1
+#https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/solution/shuang-zhi-zhen-shan-chu-zhong-fu-xiang-dai-you-hu/
