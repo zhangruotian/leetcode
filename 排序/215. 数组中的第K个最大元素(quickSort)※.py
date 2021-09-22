@@ -85,7 +85,8 @@ class Solution:
     
     def randomPartition(self,nums,start,end):
         r=randint(start,end)
-        nums[r],nums[end]=nums[end],nums[r]
+        #每次第一个元素与随机元素交换位置，然后再partition，相当于选任意元素作为pivot，可以使分割更均匀。
+        nums[r],nums[start]=nums[start],nums[r]
         return self.partition(nums,start,end)
 
     def quickSort(self,nums,start,end,res_index):              
