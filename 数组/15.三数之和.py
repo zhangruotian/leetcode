@@ -32,3 +32,39 @@ class Solution:
 # 当 sum<0时，L++
 # 当 sum>0时，R--
 
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        for i in range(len(nums)-2):
+            if nums[i]>0:
+                return res
+            if i>0 and nums[i] == nums[i-1]:
+                continue
+            j,k = i+1, len(nums)-1
+            while j<k:
+                is_fulfill = self.fulfill(nums, res, i,j,k)
+                if is_fulfill==0:
+                    j+=1
+                    k-=1
+                if is_fulfill<0:
+                    j+=1
+                if is_fulfill>0:
+                    k-=1
+        return res
+
+    def fulfill(self,nums,res,i,j,k):
+        sum_ = nums[i]+nums[j]+nums[k]
+        if sum_ ==0:
+            if j==i+1 or k==len(nums)-1 or (nums[j]!=nums[j-1] and nums[k]!=nums[k+1]):
+                res.append([nums[i],nums[j],nums[k]])
+            return 0
+        if sum_ < 0:
+            return -1
+        if sum_>0:
+            return 1
+# new version
+
+
+
