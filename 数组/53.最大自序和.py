@@ -1,13 +1,3 @@
-class Solution:
-    def maxSubArray(self, nums: List[int]) -> int:
-        arr=[0]*len(nums)
-        arr[0]=nums[0]
-        for i in range(1,len(nums)):
-            A = nums[i]
-            B = nums[i]+arr[i-1]
-            arr[i]=max(A,B)
-        return max(arr)
-        
 # 动态规划:
 # 1.分析，找出递归方程： OPT(i)表示 末尾为第i个元素时的子序列的最优解，即最大值。
 # 分析可知，有两种情况：a. 只选当前值nums[i]  (OPT(i-1)可能为负数)
