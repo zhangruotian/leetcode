@@ -21,13 +21,11 @@ class Solution:
 # 由转移方程可知: OPT(i)只与OPT(i-1)有关，并且最后结果不需要用到所有OPT(i),因此不需要用list记录OPT(0)---OPT(n),用一个variable交替计算即可.
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        a=nums[0]
-        max_value=a
-        for i in range(1,len(nums)):
-            a = max(nums[i],nums[i]+a)
-            if a>max_value:
-                max_value=a
-        return max_value
+        prev_max, res = float('-inf'),float('-inf')
+        for i in range(len(nums)):
+            prev_max = max(prev_max+nums[i],nums[i])
+            res = max(res,prev_max)
+        return res
 # 空间复杂度O(1)
 
 #followup： 返回子数组，而不是子数组和
