@@ -31,22 +31,22 @@ class Solution:
 #followup： 返回子数组，而不是子数组和
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
-        #返回最大子数组
-        #dp[i+1]=max(dp[i]+nums[i+1],nums[i+1])
-        s,start,end=0,0,0
-        dp=nums[0]
-        res=dp
-        for i in range(1,len(nums)):
-            if dp+nums[i]>=nums[i]:
-                dp=dp+nums[i]
+        res_start, res_end = 0,0
+        start, end = 0,0
+        prev_max, overall_max = float('-inf'), float('-inf')
+        for i in range(len(nums)):
+            cur = nums[i]
+            if prev_max+cur>cur:
+                prev_max = prev_max+cur
             else:
-                dp=nums[i]
-                s=i
-            if dp>res:
-                res=dp
-                end=i
-                start=s
-        return nums[start:end+1]
+                prev_max = cur
+                start = i
+            end+=1
+            if prev_max > overall_max:
+                overall_max = prev_max
+                res_start, res_end = start,end
+        return nums[res_start:res_end]
+
 #维护一个s记录每个子数组对应的起始index。
 #维护start和end记录最大子数组对应的index。当dp比最大值大时，更新start和end
 # 最后返回数组即可
