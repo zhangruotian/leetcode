@@ -6,10 +6,13 @@ def binarySearch(nums,target):
         if nums[m]==target:
             return True
         elif nums[m]<target:
-            l=m+1          
+            l=m+1          #[l,r) 保持一致 bugfree
         else:
-            r=m
+            r=m          #[l,r) 保持一致 bugfree
     return False
+# 如果未找到target，最后ij重合退出循环，而且ij指向的位置是target应该插入的位置。 1 2 4 target3， ij=2， 1 2 3 target4， ij=3.
+
+
 
 def binarySearchRec(nums,target):
     l = 0
