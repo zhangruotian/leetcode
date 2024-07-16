@@ -1,34 +1,32 @@
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        start=self.find_pivot(nums)
-        if nums[start]<=target<=nums[len(nums)-1]:
-            return self.binarySearch(nums,target,start,len(nums))
+        pivot = self.find_pivot(nums)
+        if nums[pivot]<=target<=nums[-1]:
+            return self.binary_search(nums,target,pivot,len(nums))
         else:
-            return self.binarySearch(nums,target,0,start)
+            return self.binary_search(nums, target, 0, pivot)
 
     def find_pivot(self, nums):
-        if len(nums)==1:
-            return 0
-        l = 0
-        r = len(nums)
-        while l < r:
-            m = (l + r - 1) // 2
-            if nums[m] > nums[r-1]:
-                l = m + 1
-            elif nums[m] < nums[r-1]:
-                r = m+1
-            else:
-                return l
-
-    def binarySearch(self,nums,target,l,r):
+        l,r = 0, len(nums)
         while l<r:
-            m=(l+r-1)//2
-            if nums[m]==target:
+            m = (l+r-1)//2
+            if nums[m] > nums[-1]:
+                l = m+1
+            if nums[m] < nums[-1]:
+                r = m
+            if nums[m] == nums[-1]:
                 return m
-            if nums[m]>target:
-                r=m
-            else:
-                l=m+1
+        return l 
+
+    def binary_search(self,nums, target, l, r):
+        while l<r:
+            m = (l+r-1)//2
+            if nums[m] < target:
+                l = m+1
+            if nums[m] > target:
+                r = m
+            if nums[m] == target:
+                return m
         return -1
         
 # 先找到最小值索引，然后就可二分查找
