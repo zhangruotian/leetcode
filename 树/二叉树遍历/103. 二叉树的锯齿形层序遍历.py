@@ -25,25 +25,26 @@ class Solution:
 
 #BFS
 class Solution:
-    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+    from collections import deque
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root: return []
-        res=[]
-        cur=[root]
-        level=1
-        while cur:
-            next=[]
-            vals=deque()
-            for node in cur:
-                if level%2==0:
-                    vals.appendleft(node.val)
+        nodes = [root]
+        res = []
+        left_to_right = True
+        while nodes:
+            level_res = deque()
+            new_nodes = []
+            for node in nodes:
+                if left_to_right:
+                    level_res.append(node.val)
                 else:
-                    vals.append(node.val)
+                    level_res.appendleft(node.val)
                 if node.left:
-                    next.append(node.left)
+                    new_nodes.append(node.left)
                 if node.right:
-                    next.append(node.right)
-            cur=next
-            level+=1
-            res.append(list(vals))
+                    new_nodes.append(node.right)
+            nodes = new_nodes 
+            res.append(list(level_res))
+            left_to_right = not left_to_right
         return res
         
