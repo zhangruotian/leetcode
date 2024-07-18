@@ -22,17 +22,31 @@ class Solution:
             right-=1
             bottom-=1
         return res
-# 定义left right top bottom, 读取最外圈后都--
-# 判断条件:left<=right top<=bottom
-# 情况:1 left<right and top<bottom: 读一圈
-# 1 2 3
-# 1 2 3
-# 1 2 3
-# 情况2: 1 2 3  或者 1  读一行
-# 情况3： 读一列
-# 1
-# 2
-# 3 
-# 读行的时候由left和right限制长度，读列的时候由top和bottom限制长度
+# 旧代码
 
-# 时间复杂度O(mn) 空间O(1)
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        res = []
+        top, bot, left, right = 0, len(matrix)-1, 0, len(matrix[0])-1
+        while bot>=top and right>=left:
+            top, bot, left, right = self.spiralCircle(matrix, top, bot, left, right,res)
+        return res
+
+    def spiralCircle(self, matrix, top, bot, left, right,res):
+        if bot>=top+1 and right>=left+1:
+            for j in range(left,right+1):
+                res.append(matrix[top][j])
+            for i in range(top+1, bot):
+                res.append(matrix[i][right])
+            for p in range(right, left-1,-1):
+                res.append(matrix[bot][p])
+            for q in range(bot-1, top, -1):
+                res.append(matrix[q][left])
+        if bot == top and right>=left:
+            for i in range(left, right+1):
+                res.append(matrix[top][i])
+        if bot>=top+1 and right==left:
+            for i in range(top, bot+1):
+                res.append(matrix[i][left])
+        return top+1,bot-1,left+1,right-1
+# 新代码
