@@ -21,40 +21,8 @@ class Solution:
             cur.next=ListNode(min_val)
             cur=cur.next
         return dummy_head.next
-# k组，每组n个。T:O(nklogk) 
 # 暴力算法T:O(nkk)
 # 用heap把k->logk
-
-
-# 猴子补丁
-# 几个方法： list=[] heapq.heappush(list,node) list为空，一个个添加 nlog(n)
-# popped_node=heapq.heappop(list)
-# heapq.heapify(list) list为初始列表，直接原地heapify  O(n)
-class Solution:
-    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        if not lists or lists==[None]*len(lists): return None
-        def __lt__(self,other):
-            return self.val<other.val
-        ListNode.__lt__=__lt__
-
-        import heapq
-        heap=[]
-        for node in lists:
-            if node:
-                heapq.heappush(heap,node)
-        dummy_head=ListNode()
-        cur=dummy_head
-
-        while heap:
-            popped=heapq.heappop(heap)
-            next=popped.next
-            popped.next=None
-            cur.next=popped
-            cur=cur.next
-            if next:
-                heapq.heappush(heap,next)
-        return dummy_head.next
-
 
 #手动heapify和pop
 #如果堆顶的node有next，则lists[0]=node.next   heapify(lists,0,l)
@@ -95,5 +63,39 @@ class Solution:
         lists[min_index],lists[i]=lists[i],lists[min_index]
         if i!=min_index:
             self.heapify(lists,min_index,l)
+
+#两两merge。类似merge sort O(nklog(k))
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        if not lists: return None
+        while len(lists)>1:
+            new_lists = []
+            for i in range(0,len(lists),2):
+                cur = lists[i]
+                if i+1<len(lists):
+                    next = lists[i+1]
+                    new_head=self.merge(cur,next)
+                    new_lists.append(new_head)
+                else:
+                    new_lists.append(cur)
+            lists = new_lists
+        return lists[0] 
+     
+    def merge(self,cur,next):
+        dummy_head = ListNode()
+        i = dummy_head
+        while cur and next:
+            if cur.val<= next.val:
+                i.next = cur
+                cur = cur.next
+            else:
+                i.next = next
+                next=next.next
+            i = i.next
+        if cur:
+            i.next = cur
+        if next:
+            i.next = next
+        return dummy_head.next
         
         
