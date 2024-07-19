@@ -32,7 +32,7 @@ nums=[12,15,17,19,21,24,45]
 target=45
 print(binarySearchRec(nums,target))
 
-
+# https://www.nowcoder.com/practice/4f470d1d3b734f8aaf2afb014185b395?tpId=188&&tqId=38588&rp=1&ru=/activity/oj&qru=/ta/job-code-high-week/question-ranking
 # 请实现有重复数字的升序数组的二分查找
 # 给定一个 元素有序的（升序）长度为n的整型数组 nums 和一个目标值 target，写一个函数搜索 nums 中的第一个出现的target，如果目标值存在返回下标，否则返回 -1
 class Solution:
