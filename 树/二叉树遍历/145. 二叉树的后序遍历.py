@@ -25,17 +25,22 @@ class Solution:
 # dfs
 
 class Solution:
-    def postorderTraversal(self, root: TreeNode) -> List[int]:
-        res=[]
-        stack=[]
-        cur=root
-        while stack or cur:
-            if cur:
-                res.append(cur.val)
-                stack.append(cur)
-                cur=cur.right
-            else:
-                tmp=stack.pop()
-                cur=tmp.left
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    #.   1             1245367   4251637 4526731 
+    #. 2.  3
+    # 4 5  6 7
+    #. 9 8
+        res, stack = [], []
+        self.find_right_most(root,res,stack)
+        while stack:
+            pop = stack.pop()
+            if pop.left:
+                self.find_right_most(pop.left,res,stack)
         return res[::-1]
+    
+    def find_right_most(self, root, res, stack):
+        while root:
+            res.append(root.val)
+            stack.append(root)
+            root = root.right 
 # iterative
