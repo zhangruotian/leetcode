@@ -24,17 +24,23 @@ class Solution:
 # dfs 前序遍历与 dfs访问顺序一致
 
 class Solution:
-    def preorderTraversal(self, root: TreeNode) -> List[int]:
+    #.   1             1245367   4251637 4526731 
+    #. 2.  3
+    # 4 5  6 7
+    #. 9 8
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         res=[]
-        stack=[]
-        cur=root
-        while stack or cur:
-            if cur:
-                res.append(cur.val)
-                stack.append(cur)
-                cur=cur.left
-            else:
-                tmp=stack.pop()
-                cur=tmp.right
+        stack = []
+        self.find_left_most(root, res, stack)
+        while stack:
+            pop = stack.pop()
+            if pop.right:
+                self.find_left_most(pop.right, res, stack)
         return res
+    
+    def find_left_most(self, root, res, stack):
+        while root:
+            stack.append(root)
+            res.append(root.val)
+            root = root.left
 # iterative
