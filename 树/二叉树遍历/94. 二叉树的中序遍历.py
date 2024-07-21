@@ -26,38 +26,22 @@ class Solution:
 #dfs
 
 class Solution:
-    def inorderTraversal(self, root: TreeNode) -> List[int]:
-        res=[]
-        stack=[]
-        while stack or root:
-            if root:
-                stack.append(root)
-                root=root.left
-            else:
-                tmp=stack.pop()
-                res.append(tmp.val)
-                root=tmp.right
-        return res
-# iterative
-# https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/dong-hua-yan-shi-94-er-cha-shu-de-zhong-xu-bian-li/        
-
-# 中序 前序 后序 层序 遍历，dfs和iterative模板: https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/python3-er-cha-shu-suo-you-bian-li-mo-ban-ji-zhi-s/
-
-#新代码
-class Solution:
+    #.   1             1245367   4251637 4526731 
+    #. 2.  3
+    # 4 5  6 7
+    #. 9 8
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
-        if not root: return []
-        stack = []
-        res = []
-        self.left_most(root,stack)
+        res, stack = [], []
+        self.find_left_most(root, stack)
         while stack:
             pop = stack.pop()
             res.append(pop.val)
             if pop.right:
-                self.left_most(pop.right, stack)
+                self.find_left_most(pop.right, stack)
         return res
     
-    def left_most(self,root,stack):
+    def find_left_most(self,root,stack):
         while root:
             stack.append(root)
             root = root.left
+# iterative
