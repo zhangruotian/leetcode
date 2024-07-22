@@ -51,25 +51,6 @@ class Solution:
 #回溯
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        res=[[]]
-        path=[]
-        self.dfs(nums,res,path,0)
-        return res[0]
-    
-    def dfs(self,nums,res,path,index):
-        for i in range(index,len(nums)):
-            if len(path)>0 and nums[i]<=path[-1]:
-                continue
-            if len(path)>len(res[0]):
-                res[0]=path[:]
-            path.append(nums[i])
-            if len(path)>len(res[0]):
-                res[0]=path[:]
-            self.dfs(nums,res,path,i+1)
-            path.pop()
-
-class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
         res,path=[[]],[]
         self.dfs(nums,res,path,0)
         return len(res[0])
