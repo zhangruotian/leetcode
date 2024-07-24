@@ -21,3 +21,28 @@ class Solution:
             path.pop()
             
 #https://leetcode-cn.com/problems/restore-ip-addresses/solution/hui-su-suan-fa-hua-tu-fen-xi-jian-zhi-tiao-jian-by/
+
+# new code
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        path = []
+        res = []
+        self.dfs(s, path, res, 0)
+        return res 
+    
+    def dfs(self, s, path, res, index):
+        if len(path) == 4 and index==len(s):
+            res.append('.'.join(path[:]))
+            return 
+        if len(path)>4 or index>=len(s):
+            return 
+
+        for i in range(index, index+3):
+            num = s[index:i+1]
+            if len(num)>1 and num.startswith('0'):
+                continue
+            if int(num)>255:
+                continue
+            path.append(num)
+            self.dfs(s, path, res, i+1)
+            path.pop()
