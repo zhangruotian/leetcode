@@ -54,7 +54,7 @@ class Solution:
                 max_right=height[i]
             else:
                 res+=max_right-height[i]
-                
+# https://www.youtube.com/watch?v=bu1quf2rOp8
         return res
 # 找到最高点，其左边只用看max_left，其右边只用看max_right
 # T:O(n) S:O(1)
