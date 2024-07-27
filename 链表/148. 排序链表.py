@@ -34,41 +34,42 @@ class Solution:
 
 # merge sort  T:O(nlogn) S:O(logn)
 class Solution:
-    def sortList(self, head: ListNode) -> ListNode:
-        return self.mergeSort(head)
-
-    def merge(self,head1,head2):
-        cur1=head1
-        cur2=head2
-        dummy_head=ListNode()
-        cur=dummy_head
-        while cur1 and cur2:
-            if cur1.val <= cur2.val:
-                cur.next=cur1
-                cur1=cur1.next
-            else:
-                cur.next=cur2
-                cur2=cur2.next
-            cur=cur.next
-        cur.next=cur1 or cur2
-        return dummy_head.next
-
-    def midCut(self,head):
-        slow,fast=head,head.next
-        while fast and fast.next:
-            fast=fast.next.next
-            slow=slow.next
-        new_head=slow.next
-        slow.next=None
-        return head,new_head
-
-    def mergeSort(self,head):
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
             return head
-        head1,head2=self.midCut(head)
-        new_head1=self.mergeSort(head1)
-        new_head2=self.mergeSort(head2)
+        head1, head2 = self.find_mid(head)
+        new_head1 = self.sortList(head1)
+        new_head2 = self.sortList(head2)
         return self.merge(new_head1,new_head2)
+    
+    def find_mid(self, head):
+        dummy_head = ListNode()
+        dummy_head.next = head
+        pre, slow,fast = dummy_head, head, head
+        while fast and fast.next:
+            pre = pre.next
+            slow = slow.next
+            fast = fast.next.next
+        pre.next = None
+        return head, slow
+    
+    def merge(self, head1, head2):
+        dummy_head = ListNode()
+        cur = dummy_head
+        cur1, cur2 = head1, head2
+        while cur1 and cur2:
+            if cur1.val<cur2.val:  
+                cur.next = cur1
+                cur1 = cur1.next
+            else:
+                cur.next = cur2
+                cur2 = cur2.next
+            cur = cur.next
+        if cur1:
+            cur.next = cur1
+        if cur2:
+            cur.next = cur2
+        return dummy_head.next
 
 
 # bottom-up T:O(nlogn) S:O(1)
