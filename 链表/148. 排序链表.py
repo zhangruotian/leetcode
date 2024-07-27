@@ -73,59 +73,69 @@ class Solution:
 
 # bottom-up T:O(nlogn) S:O(1)
 class Solution:
-    def sortList(self, head: ListNode) -> ListNode:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
             return head
-        length=0
-        cur=head
-        while cur:
-            cur=cur.next
-            length+=1
-        step=1
-        dummy_head=ListNode()
-        dummy_head.next=head
+        dummy_head = ListNode()
+        dummy_head.next = head
+        step = 1
+        length = self.get_len(head)
         while step<length:
-            cur=dummy_head.next
-            tail=dummy_head
+            old_tail = dummy_head
+            cur = dummy_head.next
             while cur:
-                left=cur
-                right=self.split(cur,step)
-                cur=self.split(right,step)
-                tail=self.merge(left,right,tail)
-            step*=2
+                right = self.split(cur,step)
+                if not right:
+                    old_tail.next = cur
+                    break
+                next = self.split(right,step)
+                new_head, new_tail = self.merge(cur,right)
+                old_tail.next = new_head
+                old_tail = new_tail
+                cur = next
+            step *= 2
         return dummy_head.next
-        
-    # merge 2 sorted lists, and append the result to head
-    # return the tail
-    def merge(self,head1,head2,tail):
-        cur1=head1
-        cur2=head2
-        dummy_head=ListNode()
-        cur=dummy_head
+    
+    def merge(self, head1, head2):
+        dummy_head = ListNode()
+        cur1,cur2, cur = head1, head2, dummy_head
         while cur1 and cur2:
-            if cur1.val <= cur2.val:
+            if cur1.val<cur2.val:
                 cur.next=cur1
-                cur1=cur1.next
+                cur1 = cur1.next
             else:
                 cur.next=cur2
-                cur2=cur2.next
+                cur2 = cur2.next
+            cur = cur.next
+        if cur1:
+            cur.next = cur1
+        if cur2:
+            cur.next = cur2
+        while cur.next:
             cur=cur.next
-        cur.next=cur1 or cur2
-        while cur.next: cur=cur.next
-        tail.next=dummy_head.next
-        return cur
+        return dummy_head.next, cur
 
     # divide the linked list into two lists
     # first linked list contains n nodes
     # return the head of second linked list
-    def split(self,head,n):
-        for _ in range(n-1):
-            if head:
-                head=head.next
-            else:
-                break
-        if not head:
+    def split(self, cur, step):
+        if not cur:
             return None
-        second=head.next
-        head.next=None
-        return second
+        for _ in range(step-1):
+            if cur:
+                cur =cur.next
+            else:
+                return cur
+        if not cur:
+            return None
+        next = cur.next
+        cur.next = None
+        return next
+    
+    def get_len(self, head):
+        l = 0
+        while head:
+            l+=1
+            head=head.next
+        return l 
+
