@@ -3,36 +3,38 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-
-#quickSort超时
 class Solution:
-    def sortList(self, head: ListNode) -> ListNode:
+    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         return self.quickSort(head,None)
-
-    def partition(self,start,end):
-        head,tail=start,start
-        cur=start.next
-        while cur is not end:
-            next=cur.next
-            if cur.val<start.val:
-                cur.next=head
-                head=cur
+    
+    def quickSort(self, head, tail):
+        if not head:
+            return None
+        if head is tail:
+            return head
+        s, m = self.partition(head, tail)
+        left_head = self.quickSort(s,m)
+        m.next = self.quickSort(m.next, tail)
+        return left_head 
+    
+    def partition(self, head, tail):
+        sub_head, sub_tail, sub_pivot = head,head,head
+        cur = head.next
+        while cur and cur is not tail:
+            next = cur.next
+            if cur.val <= sub_pivot.val:
+                cur.next = sub_head
+                sub_head = cur
+                sub_tail.next = tail
             else:
-                tail.next=cur
-                tail=cur
-            cur=next
-        tail.next=end
-        return head,start
+                sub_tail.next = cur
+                sub_tail = cur
+                sub_tail.next = tail
+            cur = next
+        return sub_head, head
+# quick sort
 
-    def quickSort(self,start,end):
-        if start is end:
-            return start
-        s,m=self.partition(start,end)
-        head=self.quickSort(s,m)
-        m.next=self.quickSort(m.next,end)
-        return head
 
-# merge sort  T:O(nlogn) S:O(logn)
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
@@ -70,9 +72,9 @@ class Solution:
         if cur2:
             cur.next = cur2
         return dummy_head.next
+# merge sort  T:O(nlogn) S:O(logn)
 
 
-# bottom-up T:O(nlogn) S:O(1)
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
@@ -139,4 +141,4 @@ class Solution:
             l+=1
             head=head.next
         return l 
-
+# bottom-up T:O(nlogn) S:O(1)
