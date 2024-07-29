@@ -57,3 +57,4 @@ class Solution:
             return max(l1,l2)
         else:
             return (max(l1,l2)+min(r1,r2))/2
+# 思路 https://www.youtube.com/watch?v=ScCg9v921ns
