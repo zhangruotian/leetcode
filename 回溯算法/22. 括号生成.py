@@ -1,31 +1,28 @@
 class Solution:
+    from collections import Counter
     def generateParenthesis(self, n: int) -> List[str]:
-        l=['(']*n+[')']*n
-        path,res,visited=[],[],[0]*len(l)
-        self.backTrack(l,path,res,visited,0,len(l))
+        ps = ["(",")"]
+        res, path = [],[]
+        self.dfs(ps,path,res,n)
         return res
     
-    def backTrack(self,l,path,res,visited,nums_left,n):
-        if nums_left<0:
-            return
-        if len(path)==n and not nums_left:
-            res.append(''.join(path[:]))
+    def dfs(self, ps, path, res, n):
+        if len(path)==2*n:
+            res.append("".join(path[:]))
             return 
-        for i in range(len(l)):
-            if visited[i]:continue
-            if l[i-1]==l[i] and not visited[i-1]:
+
+        for i in range(len(ps)):
+            count = Counter(path)
+            if ps[i]=="(" and count["("]>=n:
                 continue
-            path.append(l[i])
-            visited[i]=1
-            if l[i]=='(':
-                self.backTrack(l,path,res,visited,nums_left+1,n)
-            else:
-                self.backTrack(l,path,res,visited,nums_left-1,n)
-            visited[i]=0
+            if ps[i]==")" and count[")"]>=n:
+                continue
+            if ps[i]==")" and count[")"]==count["("]:
+                continue
+            path.append(ps[i])
+            self.dfs(ps,path,res,n)
             path.pop()
-#visited过的跳过
-#l[n]==l[n-1]且没有visited过的跳过，防止重复
-#如果先出现')'是错误的，直接return
+# 回溯
 
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
