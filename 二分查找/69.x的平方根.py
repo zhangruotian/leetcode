@@ -16,11 +16,16 @@ class Solution:
 
 # 牛顿法，可满足精度要求
 class Solution:
-    def mySqrt(self, x: int,precision: int) -> int:
-        if x==0: return 0
-        r1,r2,x=float(x),float(x),float(x)
+    import math
+    def mySqrt(self, x: int) -> int:
+        if x ==0 or x ==1:
+            return x
+        return math.floor(self.mySqrtPrec(x,1e-7))
+        
+    def mySqrtPrec(self, x, precision):
+        r1,r2 = float(x),float(x)
         while True:
-            r2=0.5*(r1+x/r1)
-            if abs(r2-r1)<1e-31:
-                return round(r2,precision)
-            r1=r2
+            r2 = 0.5*(r1+x/r1)
+            if abs(r2-r1)<precision and abs(r2*r2-x)<precision:
+                return r2
+            r1 = r2
