@@ -15,28 +15,26 @@ class Solution:
         return 0
 # t:o(m+n+max(m,n)) s:o(m+n)
 
-#不用split, t:o(max(m,n)) , s:o(1)
+#不使用自带函数split,自己实现双指针 t:o(max(m,n)) , s:o(1)
 class Solution:
     def compareVersion(self, version1: str, version2: str) -> int:
-        p1,p2=0,0
-        while p1!=-1 or p2!=-1:
-            p1,n1=self.getNext(version1,p1)
-            p2,n2=self.getNext(version2,p2)
-            if n1<n2:
+        m,n = len(version1),len(version2)
+        i,j = 0,0
+        while True:
+            x = 0
+            while i<m and version1[i]!='.':
+                x = x*10+ord(version1[i])-ord('0')
+                i+=1
+            y=0
+            while j<n and version2[j]!='.':
+                y = y*10+ord(version2[j])-ord('0')
+                j+=1
+            if x<y:
                 return -1
-            if n1>n2:
+            if x>y:
                 return 1
-        return 0
-
-    def getNext(self,version,p):
-        # 01.01.01. 001.001.001
-        if p==-1:
-            return -1,0
-        next=""
-        while version[p]!='.':
-            if p==len(version)-1:
-                return -1,int(next+version[p])
-            next+=version[p]
-            p+=1
-        return p+1,int(next)
+            i+=1
+            j+=1
+            if i>=m and j>=n:
+                return 0
         
