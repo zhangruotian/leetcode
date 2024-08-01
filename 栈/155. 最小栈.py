@@ -1,5 +1,5 @@
+#两个list
 class MinStack:
-
     def __init__(self):
         """
         initialize your data structure here.
@@ -20,45 +20,62 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.min_stack[-1]
+        
+# 一个list，元素是tuple
+class MinStack:
+    def __init__(self):
+        self.stack=[]
 
+    def push(self, val: int) -> None:
+        if not self.stack:
+            self.stack.append((val,val))
+        else:
+            min_val = min(self.stack[-1][1],val)
+            self.stack.append((val,min_val))
 
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
+        
 #不使用额外空间
 #栈里维护与最小值之间的差值
 class MinStack:
-    # 1     4.       -3
-    # -3    -1.      -3
-    # 0     2        -2
-    # -2    0        -2
+    # 
+    # -3.  0.  -3    
+    # -3.  -1. -3
+    # 0.   2. -2.   
+    # -2   0  -2
+
     def __init__(self):
-        """
-        initialize your data structure here.
-        """
         self.stack=[]
-        self.min_val=0
+        self.min = None
 
     def push(self, val: int) -> None:
         if not self.stack:
             self.stack.append(0)
-            self.min_val=val
+            self.min = val
         else:
-            diff=val-self.min_val
-            self.stack.append(diff)
+            diff = val-self.min
+            self.stack.append(val-self.min)
             if diff<0:
-                self.min_val=val
-            
+                self.min = val
 
     def pop(self) -> None:
-        diff=self.stack.pop()
-        if diff>0:
-            res=diff+self.min_val
-        else:
-            res=self.min_val
-            self.min_val=self.min_val-diff
-        return res
-
+        pop = self.stack.pop()
+        if pop>0:
+            res = pop+self.min
+        if pop<=0:
+            res = self.min
+            self.min = self.min - pop
 
     def top(self) -> int:
-        return self.stack[-1]+self.min_val if self.stack[-1]>0 else self.min_val
+        pop = self.stack[-1]
+        return pop+self.min if pop>0 else self.min
 
     def getMin(self) -> int:
-        return self.min_val
+        return self.min
