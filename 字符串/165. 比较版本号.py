@@ -23,7 +23,7 @@ class Solution:
         while True:
             x = 0
             while i<m and version1[i]!='.':
-                x = x*10+ord(version1[i])-ord('0')
+                x = x*10+ord(version1[i])-ord('0'） #关键是这里的算法
                 i+=1
             y=0
             while j<n and version2[j]!='.':
