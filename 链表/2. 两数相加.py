@@ -4,36 +4,27 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        cur1=l1
-        cur2=l2
-        head=ListNode(0)
-        cur=head
-        while True:
-            if cur1 and cur2:
-                sum_val=cur.val+cur1.val+cur2.val
-                cur1=cur1.next
-                cur2=cur2.next
-            elif cur1:
-                sum_val=cur1.val+cur.val
-                cur1=cur1.next
-            elif cur2:
-                sum_val=cur2.val+cur.val
-                cur2=cur2.next
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy_head = ListNode()
+        cur, cur1, cur2 = dummy_head, l1, l2
+        carry_over = 0
+        while cur1 or cur2:
+            cur1_val = cur1.val if cur1 else 0
+            cur2_val = cur2.val if cur2 else 0
+            total = cur1_val+cur2_val+carry_over
+            if total>9:
+                val = total-10
+                carry_over = 1
             else:
-                break
-            
-            if sum_val>=10:
-                cur.val=sum_val-10
-                cur.next=ListNode(1)
-            else:
-                cur.val=sum_val
-                cur.next=ListNode(0)
-            
-            prev=cur
-            cur=cur.next
-        
-        if  cur.val==0:
-            prev.next=None
-            
-        return head
+                val = total
+                carry_over = 0
+            cur.next = ListNode(val)
+            cur = cur.next
+            if cur1:
+                cur1=cur1.next
+            if cur2:
+                cur2=cur2.next
+        if carry_over:
+            cur.next = ListNode(1)
+        return dummy_head.next
+
