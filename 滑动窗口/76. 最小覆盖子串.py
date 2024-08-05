@@ -47,7 +47,6 @@ class Solution:
             j=self.expand(s,j,count)
         if j == len(s):
             return "" if any([val>0 for val in count.values()]) else s[i:j+1]
-        print(i,j)
         mini,minj = i,j
         minlen = j-i
         while True:
