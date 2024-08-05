@@ -18,27 +18,24 @@ class Solution:
 
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
-        if not s: return 0
-        dp=[0]*len(s)
-        for i in range(len(s)):
-            if s[i]==')':
-                if i-1>=0:
-                    if s[i-1]=='(':
-                        if i-2>=0:
-                            dp[i]=2+dp[i-2]
-                        else:
-                            dp[i]=2
+        # ( ) ( ) ( ( ) )
+        if not s:
+            return 0
+        dp = [0]*len(s)
+        for i in range(1,len(s)):
+            if s[i]=="(":
+                dp[i] = 0
+            else:
+                if s[i-1] == "(":
+                    if i-2>=0:
+                        dp[i] = 2 + dp[i-2]
                     else:
-                        if i-dp[i-1]-1<0:
-                            continue
-                        else:
-                            if s[i-dp[i-1]-1]==')':
-                                continue
-                            else:
-                                if i-dp[i-1]-2<0:
-                                    dp[i]=2+dp[i-1]
-                                else:
-                                    dp[i]=2+dp[i-1]+dp[i-dp[i-1]-2]
+                        dp[i] = 2
+                else:
+                    if i-dp[i-1]-1<0 or s[i-dp[i-1]-1] == ")" :
+                        dp[i] = 0
+                    else:
+                        dp[i] = dp[i-dp[i-1]-2]+dp[i-1]+2
         return max(dp)
 # dp
 #笔记
