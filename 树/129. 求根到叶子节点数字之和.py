@@ -28,20 +28,19 @@ class Solution:
 
 #bfs循环
 class Solution:
-    def sumNumbers(self, root: TreeNode) -> int:
-        q=deque([root])
-        res=0
-        while q:
-            for _ in range(len(q)):
-                tmp=q.popleft()
-                l=tmp.left
-                r=tmp.right
-                if not l and not r:
-                    res+=tmp.val
-                if l:
-                    l.val=tmp.val*10+l.val
-                    q.append(l)
-                if r:
-                    r.val=tmp.val*10+r.val
-                    q.append(r)
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        res = 0
+        nodes = [root]
+        while nodes:
+            new_nodes = []
+            for node in nodes:
+                if not node.left and not node.right:
+                    res+=node.val
+                if node.left:
+                    node.left.val = node.val*10+node.left.val
+                    new_nodes.append(node.left)
+                if node.right:
+                    node.right.val = node.val*10+node.right.val
+                    new_nodes.append(node.right)
+            nodes = new_nodes
         return res
