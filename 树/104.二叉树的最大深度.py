@@ -11,3 +11,19 @@ class Solution:
         l=self.maxDepth(root.left)
         r=self.maxDepth(root.right)
         return max(l,r)+1
+
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        nodes = [root]
+        level = 0
+        while nodes:
+            level+=1
+            new_nodes = []
+            for node in nodes:
+                if node.left:
+                    new_nodes.append(node.left)
+                if node.right:
+                    new_nodes.append(node.right)
+            nodes = new_nodes
+        return level
