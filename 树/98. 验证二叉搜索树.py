@@ -5,22 +5,21 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    #.  4
-    #  3 5
-    # 1 2
-    def isValidBST(self, root: TreeNode) -> bool:
-        self.min_val=float(-inf)
-        return self.dfs(root)
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        self.prev = float('-inf')
+        return False if self.dfs(root)==-1 else True
     
-    def dfs(self,root):
-        if not root: return True
-        if not self.dfs(root.left):
-            return False
-        if self.min_val>=root.val:
-            return False
-        self.min_val=root.val
+    def dfs(self, root):
+        if not root:
+            return 
+        if self.dfs(root.left) == -1:
+            return -1
+        if root.val<=self.prev:
+            return -1
+        else:
+            self.prev = root.val
         return self.dfs(root.right)
-#剪枝
+#剪枝 左边不符合的话，右边不用看了
 # BST中序遍历后是sorted. 
 
 #iteration
