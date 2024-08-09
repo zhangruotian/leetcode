@@ -24,18 +24,21 @@ class Solution:
 
 #iteration
 class Solution:
-    def isValidBST(self, root: TreeNode) -> bool:
-        max_val=float(-inf)
-        stack=[]
-        cur=root
-        while stack or cur:
-            if cur:
-                stack.append(cur)
-                cur=cur.left
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        prev = float('-inf')
+        stack = []
+        self.find_leftmost(root,stack)
+        while stack:
+            pop = stack.pop()
+            if pop.val<=prev:
+                return False
             else:
-                tmp=stack.pop()
-                if tmp.val<=max_val:
-                    return False
-                max_val=tmp.val
-                cur=tmp.right
-        return True 
+                prev = pop.val
+            if pop.right:
+                self.find_leftmost(pop.right,stack)
+        return True
+    
+    def find_leftmost(self,node,stack):
+        while node:
+            stack.append(node)
+            node = node.left
