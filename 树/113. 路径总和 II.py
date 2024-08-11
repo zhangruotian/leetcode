@@ -1,28 +1,24 @@
 # Definition for a binary tree node.
 # class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    
-    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
-        res=[]
-        path=[]
-        self.dfs(root,sum,path,res)
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        res, path = [],[]
+        self.dfs(root,res,path,targetSum)
         return res
     
-    def dfs(self,root,sum,path,res):
+    def dfs(self,root,res,path,targetSum):
         if not root:
-            return
+            return 
+            
         path.append(root.val)
-        if not root.left and not root.right:
-            if root.val==sum:
-                res.append(path[:])
-        
-        self.dfs(root.left,sum-root.val,path,res)
-        self.dfs(root.right,sum-root.val,path,res)
+        if sum(path) == targetSum and not root.left and not root.right:
+            res.append(path[:])
+        self.dfs(root.left,res,path,targetSum)
+        self.dfs(root.right,res,path,targetSum)
         path.pop()
 
 # 使用path记录，dfs递归过程中不产生额外的内存
