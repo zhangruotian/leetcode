@@ -1,13 +1,17 @@
 class Solution:
     def findPeakElement(self, nums: List[int]) -> int:
-        l,r=0,len(nums)
+        l,r = 0, len(nums)
         while l<r:
-            m=(l+r-1)//2
-            if m+1>=len(nums):  #注意越界处理
-                return l
-            if nums[m]<nums[m+1]:
+            m = (l+r-1)//2
+            left = float('-inf') if m-1<0 else nums[m-1]
+            right = float('-inf') if m+1>=len(nums) else nums[m+1]
+            if left<nums[m]<right:
                 l=m+1
-            if nums[m]>nums[m+1]:
+            elif left>nums[m]>right:
                 r=m
-        return l
-# https://www.youtube.com/watch?v=etuTPmks7Dc
+            elif nums[m]>left and nums[m]>right:
+                return m
+            else:
+                r=m
+            
+
