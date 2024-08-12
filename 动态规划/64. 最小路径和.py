@@ -1,39 +1,53 @@
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        #dp[i][j]=mix(dp[i][j-1],dp[i-1][j])+grid[i][j]
-        # 1 4 5
-        # 2 7 6
-        # 6 8 7
-        row,col=len(grid),len(grid[0])
-        dp=[[0]*col for _ in range(row)]
-        dp[0][0]=grid[0][0]
-        for j in range(1,col):
-            dp[0][j]=dp[0][j-1]+grid[0][j]
-        for i in range(1,row):
-            dp[i][0]=dp[i-1][0]+grid[i][0]
-        for i in range(1,row):
-            for j in range(1,col):
-                dp[i][j]=min(dp[i][j-1],dp[i-1][j])+grid[i][j];
+        m,n = len(grid), len(grid[0])
+        dp = [[0]*n for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if i-1<0 and j-1<0:
+                    dp[i][j] = grid[i][j]
+                if i-1<0 and j-1>=0:
+                    dp[i][j] = dp[i][j-1] + grid[i][j]
+                if i-1>=0 and j-1<0:
+                    dp[i][j] = dp[i-1][j] + grid[i][j]
+                if i-1>=0 and j-1>=0:
+                    dp[i][j] = min(dp[i-1][j],dp[i][j-1])+grid[i][j]
         return dp[-1][-1]
 
 #扩展： 返回路径
-#dfs
+#在dp基础上记录路径，然后从最后一个往回找
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        self.min=float(inf)
-        res,path=[],[]
-        m,n=len(grid),len(grid[0])
-        self.dfs(grid,res,path,m,n,0,0)
-        return res[-1]
-    
-    def dfs(self,grid,res,path,m,n,i,j):
-        if i==m and j==n-1 and sum(path)<self.min:
-            self.min=sum(path)
-            res.append(path[:])
-            return 
-        if i>=m or j>=n:
-            return
-        path.append(grid[i][j])
-        self.dfs(grid,res,path,m,n,i,j+1)
-        self.dfs(grid,res,path,m,n,i+1,j)
-        path.pop()
+        m,n = len(grid), len(grid[0])
+        dp = [[0]*n for _ in range(m)]
+        path = [[0]*n for _ in range(m)]
+        # 1 from top -1 from left
+        for i in range(m):
+            for j in range(n):
+                if i-1<0 and j-1<0:
+                    dp[i][j] = grid[i][j]
+                if i-1<0 and j-1>=0:
+                    dp[i][j] = dp[i][j-1] + grid[i][j]
+                    path[i][j] = -1
+                if i-1>=0 and j-1<0:
+                    dp[i][j] = dp[i-1][j] + grid[i][j]
+                    path[i][j] = 1
+                if i-1>=0 and j-1>=0:
+                    if dp[i-1][j]<=dp[i][j-1]:
+                        path[i][j] = 1
+                    else:
+                        path[i][j] = -1
+                    dp[i][j] = min(dp[i-1][j],dp[i][j-1])+grid[i][j]
+        p,q = m-1,n-1
+        trace = []
+        while p>0 or q>0:
+            trace.append(grid[p][q])
+            direction = path[p][q] 
+            if direction==1:
+                p-=1
+            if direction==-1:
+                q-=1
+        trace.append(grid[0][0])
+        trace.reverse()
+        print(trace)
+        return sum(trace)
