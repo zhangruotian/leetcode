@@ -6,27 +6,6 @@
 
 class Solution:
     def isPalindrome(self, head: ListNode) -> bool:
-        slow=head
-        fast=head
-        stack=[]
-        while fast and fast.next:
-            stack.append(slow.val)
-            slow=slow.next
-            fast=fast.next.next
-        
-        if fast:
-            slow=slow.next
-        
-        while slow:
-            if slow.val != stack.pop():
-                return False
-            slow=slow.next
-        return True
-# 快慢指针找中点，利用栈的特性做
-# T:O(n) S:O(n)
-
-class Solution:
-    def isPalindrome(self, head: ListNode) -> bool:
         if not head:
             return True
         if not head.next:
