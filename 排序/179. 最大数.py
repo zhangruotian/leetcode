@@ -1,3 +1,15 @@
+# python sort
+class Solution:
+    from functools import cmp_to_key
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = [str(num) for num in nums]
+        nums.sort(key=cmp_to_key(self.compare))
+        return str(int(''.join(nums)))
+    
+    def compare(self,num1,num2):
+        return 1 if num1+num2<num2+num1 else -1
+
+
 # quicksort
 # define a compare func
 
