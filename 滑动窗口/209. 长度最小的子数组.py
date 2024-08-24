@@ -26,14 +26,16 @@ class Solution:
 
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
-        i,sum,res=0,0,float(inf)
+        res = float('inf')
+        sum_ = 0
+        i=0
         for j in range(len(nums)):
-            sum+=nums[j]
-            while sum>=target:
-                res=min(res,j-i+1)
-                sum-=nums[i]
+            sum_+=nums[j]
+            while sum_>=target:
+                res = min(res,j-i+1)
+                sum_-=nums[i]
                 i+=1
-        return 0 if i==0 else res
+        return res if res != float('inf') else 0
 # 滑动窗口  O(n)
 #https://www.youtube.com/watch?v=jp15K7dTCHc
 # 注意实现时代码别写的冗长
