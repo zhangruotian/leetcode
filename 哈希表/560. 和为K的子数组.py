@@ -1,16 +1,18 @@
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        sum_map={0:1}
-        cum_sum=0
-        res=0
-        for num in nums:
-            cum_sum+=num
-            if cum_sum-k in sum_map:
-                res+=sum_map[cum_sum-k]
-            if cum_sum in sum_map:
-                sum_map[cum_sum]+=1
-            else:
-                sum_map[cum_sum]=1
+        #  1 2 3 -1 -2 3    3
+        #0 1 3 6  5  3 6.
+        n = len(nums)   
+        sums = [0]*n
+        sums[0]=nums[0]
+        for i in range(1,n):
+            sums[i]= sums[i-1]+nums[i]
+        d = {0:1}
+        res = 0
+        for i in range(n):
+            if sums[i]-k in d:
+                res+=d[sums[i]-k]
+            d[sums[i]] = d.get(sums[i],0)+1
         return res
 
-
+                
