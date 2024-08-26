@@ -20,5 +20,37 @@ class Solution:
                 pre_sign=c
         return sum(stack)
 
-#https://leetcode-cn.com/problems/basic-calculator-ii/solution/ji-ben-ji-suan-qi-ii-by-leetcode-solutio-cm28/
+# new code
+class Solution:
+    def calculate(self, s: str) -> int:
+        # 312+21*2 - 31/2+1
+        stack = []
+        i = 0
+        prev = "+"
+        while i<len(s):
+            if s[i].isdigit():
+                i,num = self.get_num(s,i)
+                if prev=="+":
+                    stack.append(num)
+                elif prev=="-":
+                    stack.append(-num)
+                elif prev=="*":
+                    stack[-1] = stack[-1]*num
+                elif prev=="/":
+                    stack[-1] = int(stack[-1]/num)
+            if i==len(s):
+                break
+            if s[i] in {"+","-","*","/"}:
+                prev = s[i]
+            i+=1
+        return sum(stack)
+
+    def get_num(self,s,i):
+        num = ord(s[i])-ord('0')
+        i+=1
+        while i<len(s) and s[i].isdigit():
+            num = num*10+ord(s[i])-ord('0')
+            i+=1
+        return i,num 
+
 
