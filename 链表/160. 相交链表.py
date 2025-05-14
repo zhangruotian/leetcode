@@ -6,20 +6,13 @@
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
-        curA, curB = headA, headB
-        while True:
-            if not curA and not curB:
-                return None
+        curA,curB= headA,headB
+        while curA or curB:
             if curA is curB:
                 return curA
-            if curA and curB:
-                curA = curA.next
-                curB = curB.next
-            if curB and not curA:
-                curA = headB
-                curB = curB.next
-            if curA and not curB:
-                curB = headA
-                curA = curA.next
+            curA = curA.next if curA else headB
+            curB = curB.next if curB else headA
+        return None
+        
 # 两个指针，curA走完A走B，curB走完B走A，最后会碰到一起；或者都为none，说明无交点
 # T:O(n+m) S:O(1)
