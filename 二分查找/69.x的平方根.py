@@ -8,3 +8,16 @@ class Solution:
             x0 = x0-diff
             if diff<1e-1:
                 return math.floor(x0)
+
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        l,r = 0,x+1
+        while l<r:
+            m = (l+r-1)//2
+            if m*m == x:
+                return m
+            elif m*m < x:
+                l = m+1
+            else:
+                r = m
+        return l-1
