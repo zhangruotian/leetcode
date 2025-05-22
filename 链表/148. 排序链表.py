@@ -5,33 +5,41 @@
 #         self.next = next
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        return self.quickSort(head,None)
+        sorted_head,_ = self.quickSort(head)
+        return sorted_head
     
-    def quickSort(self, head, tail):
-        if not head:
-            return None
-        if head is tail:
-            return head
-        s, m = self.partition(head, tail)
-        left_head = self.quickSort(s,m)
-        m.next = self.quickSort(m.next, tail)
-        return left_head 
+    def quickSort(self,head):
+        if not head or not head.next: return head,head
+        first_head,last_head = self.partition(head)
+        first_sorted_head,first_sorted_tail = self.quickSort(first_head)
+        last_sorted_head,last_sorted_tail = self.quickSort(last_head)
+        if not first_sorted_tail:
+            head.next = last_sorted_head
+            return head, last_sorted_tail
+        if not last_sorted_head:
+            first_sorted_tail.next = head
+            return first_sorted_head,head
+        first_sorted_tail.next = head
+        head.next = last_sorted_head
+        return first_sorted_head,last_sorted_tail
     
-    def partition(self, head, tail):
-        sub_head, sub_tail, sub_pivot = head,head,head
+    def partition(self,head):
+        dummy_head_small = ListNode()
+        dummy_head_large = ListNode()
         cur = head.next
-        while cur and cur is not tail:
-            next = cur.next
-            if cur.val <= sub_pivot.val:
-                cur.next = sub_head
-                sub_head = cur
-                sub_tail.next = tail
+        cur1,cur2 =dummy_head_small,dummy_head_large
+        while cur:
+            if cur.val<=head.val:
+                cur1.next = cur
+                cur1=cur1.next
             else:
-                sub_tail.next = cur
-                sub_tail = cur
-                sub_tail.next = tail
-            cur = next
-        return sub_head, head
+                cur2.next = cur
+                cur2 = cur2.next
+            cur = cur.next
+        cur1.next = None
+        cur2.next = None
+        head.next = None
+        return dummy_head_small.next, dummy_head_large.next
 # quick sort
 
 
