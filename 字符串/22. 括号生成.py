@@ -1,5 +1,29 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
+        ps = ['(',')']
+        res, path = [],[]
+        self.dfs(ps,res,path,n,n,n)
+        return res
+    
+    def dfs(self,ps,res,path,n,l,r):
+        if len(path) == 2*n and l==0 and r==0:
+            res.append(''.join(path[:]))
+            return
+        for i in range(len(ps)):
+            if l<0 or r<0:
+                continue
+            if r<l:
+                continue
+            path.append(ps[i])
+            if ps[i]=='(':
+                self.dfs(ps,res,path,n,l-1,r)
+            else:
+                self.dfs(ps,res,path,n,l,r-1)
+            path.pop()
+# 回溯
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
         res=[]
         self.helper(n-1,n,'(',res)
         return res
