@@ -25,4 +25,4 @@ class Solution:
             nums[l],nums[r] = nums[r],nums[l]
             l+=1
             r-=1
-        
+    # https://www.youtube.com/watch?v=IbcQOdtmvpA
