@@ -18,15 +18,12 @@ class Solution:
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        res=[]
-        for num in reversed(nums):
-            for i in res[:]:
-                res.append([num]+i)
-            res.append([num])
-        res.append([])
+        res = [[]]
+        for num in nums:
+            for i in range(len(res)):
+                res.append(res[i]+[num])
         return res
-# dynamic programming
-# 直接从后遍历，遇到一个数就把所有子集加上该数组成新的子集，遍历完毕即是所有子集
+# 直接模拟
 
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
