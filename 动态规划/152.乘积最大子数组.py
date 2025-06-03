@@ -1,14 +1,13 @@
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        fmax=nums[0]
-        fmin=nums[0]
-        res=nums[0]
+        res = nums[0]
+        minium,maxinum = nums[0],nums[0]
         for i in range(1,len(nums)):
-            temp=fmax #fmin应该用fmax更新前的值
-            fmax=max(nums[i],fmax*nums[i],fmin*nums[i])
-            fmin=min(nums[i],temp*nums[i],fmin*nums[i])
-            if fmax>res:
-                res=fmax
+            num=nums[i]
+            new_minimum = min(minium*num,maxinum*num,num)
+            new_maxinum = max(minium*num,maxinum*num,num)
+            res = max(res,new_maxinum)
+            minium,maxinum = new_minimum,new_maxinum
         return res
 # 动态规划
 # 基本思路：一个fmax，记录以ith为结尾的子数组的最大值
