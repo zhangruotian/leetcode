@@ -18,30 +18,34 @@ class Solution:
 
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        # 2 3 4 5
-        #  3 4 5 2
-        #  1 2 4 5 3
+        # 100 第一种情况，前后不挨着
+        # 1 2 第二种情况，3来了，前面挨着 把dict中改成 1:3 3:3，2不用管
+        # 2 3 第三种情况，1来了，后面挨着 把dict中改成 1:3 3:3，2不用管
+        # 1 2 4 5 第四种情况，3来了，前后都挨着，把dict中改成 1:5 5:5，234都不用管
+        # 最后找dict的values中的最大值
         if not nums:
             return 0
+        nums = set(nums)
         d = {}
-        nums=set(nums)
         for num in nums:
             if num-1 not in d and num+1 not in d:
-                d[num]=1
+                d[num] = 1
             if num-1 in d and num+1 in d:
-                length = d[num-1]+d[num+1] +1
-                d[num-d[num-1]] = length
-                d[num+d[num+1]] = length
+                pre_len_left = d[num-1] 
+                pre_len_right = d[num+1]
+                d[num-pre_len_left] = pre_len_left+pre_len_right+1
+                d[num+pre_len_right] = pre_len_left+pre_len_right+1
                 continue
             if num-1 in d:
-                length = d[num-1]+1
-                d[num] = length
-                d[num-d[num-1]] = length
+                pre_len = d[num-1]
+                d[num] =pre_len +1
+                d[num-pre_len] = pre_len +1
             if num+1 in d:
-                length = d[num+1]+1
-                d[num] = length
-                d[num+d[num+1]] = length
+                pre_len = d[num+1]
+                d[num] = pre_len +1
+                d[num+pre_len] = pre_len +1 
         return max(d.values())
+
 
 
         
