@@ -8,8 +8,9 @@ class Solution:
             for i in range(j):
                 if dp[i] and s[i:j] in wordDict:
                     dp[j] = True
-                    continue
+                    break
         return dp[-1]
+
 
 
 # https://www.youtube.com/watch?v=H2EgWq-45CY
