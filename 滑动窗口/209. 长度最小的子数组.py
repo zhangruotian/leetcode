@@ -1,27 +1,25 @@
 class Solution:
     def minSubArrayLen(self, target: int, nums: List[int]) -> int:
-        sums = [0]*(len(nums))
-        sums[0] = nums[0]
+        sums = [0]*(len(nums)+1)
+        for i in range(len(nums)):
+            sums[i+1] = nums[i]+ sums[i]
         res = float('inf')
-        for i in range(1,len(nums)):
-            sums[i] = sums[i-1]+nums[i]
-        for i in range(len(sums)):
-            if i ==0:
-                j = self.lower_bound(sums,target,i,len(sums))
-            else:
-                j = self.lower_bound(sums,target+sums[i-1],i,len(sums))
-            if j<len(sums):
-                res = min(res,j-i+1)
+        for i in range(1,len(sums)):
+            j = self.bs(sums, sums[i]-target,0,i)
+            if j>=0 and j<len(nums):
+                res = min(res,i-j)
         return 0 if res==float('inf') else res
-
-    def lower_bound(self,sums,target,l,r):
+    
+    def bs(self,nums,target,l,r):
         while l<r:
             m = (l+r-1)//2
-            if sums[m]<target:
+            if nums[m]==target:
+                return m
+            if nums[m]<target:
                 l = m+1
-            else:
-                r=m 
-        return l  
+            if nums[m]>target:
+                r = m
+        return l-1
 # 二分查找 nlogn
 
 class Solution:
