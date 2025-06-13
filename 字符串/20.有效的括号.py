@@ -1,17 +1,14 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        stack=[]
-        lookup={'(':')','{':'}','[':']'}
-        for parenthesis in s:
-            if parenthesis in lookup:
-                stack.append(parenthesis)
+        stack = []
+        pairs = {'(':')','[':']','{':'}'}
+        for c in s:
+            if c in pairs:
+                stack.append(c)
             else:
-                if not stack or lookup[stack.pop()]!=parenthesis:
+                if not stack or pairs[stack.pop()]!=c:
                     return False
-                else:
-                    continue
         return False if stack else True
-
 # 利用栈来匹配后面的符号    
         
    
