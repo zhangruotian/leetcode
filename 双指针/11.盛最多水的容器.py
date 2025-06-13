@@ -1,17 +1,15 @@
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        l=0
-        r=len(height)-1
-        max_area=0
-        while l!=r:
-            area=min(height[l],height[r])*(r-l)
-            if area>max_area:
-                max_area=area
+        l,r = 0, len(height)-1
+        res = 0
+        while l<r:
             if height[l]<=height[r]:
+                res = max(res, (r-l)*height[l])
                 l+=1
             else:
+                res = max(res, (r-l)*height[r])
                 r-=1
-        return max_area
+        return res
         
 #双指针法，前后放置指针。短板决定水高，因此移动较短的指针，左侧向右，右侧向右，直到相遇。
 #如果移动较高指针，后面所有的面积都会比当下的面积小。我们要找最大的，因此应移动较矮的指针。
