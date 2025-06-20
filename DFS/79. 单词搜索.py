@@ -1,36 +1,39 @@
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
-        row,col=len(board),len(board[0])
-        for i in range(row):
-            for j in range(col):
-                if board[i][j]==word[0]:
-                    visited=[[0]*col for _ in range(row)]
-                    if self.dfs(board,word,0,i,j,visited):
-                        return True
+        m,n = len(board),len(board[0])
+        for i in range(m):
+            for j in range(n):
+                if self.dfs(board,word,i,j,0,m,n):
+                    return True
         return False
     
-    def dfs(self,board,word,index,row,col,visited):
-        if row>len(board)-1 or row<0:
+    def dfs(self,board,word,i,j,pos,m,n):
+        if i<0 or i>=m:
             return False
-        if col>len(board[0])-1 or col<0:
+        if j<0 or j>=n:
             return False
-        if visited[row][col]:
+        if board[i][j] == '#':
             return False
-        if board[row][col]!=word[index]:
+        if board[i][j]!=word[pos]:
             return False
-        if index==len(word)-1:
+        if board[i][j]==word[pos] and pos==len(word)-1:
             return True
-        visited[row][col]=1
-        up=self.dfs(board,word,index+1,row+1,col,visited)
-        if up:return True
-        down=self.dfs(board,word,index+1,row-1,col,visited)
-        if down:return True
-        left=self.dfs(board,word,index+1,row,col-1,visited)
-        if left:return True
-        right=self.dfs(board,word,index+1,row,col+1,visited)
-        if right:return True
-        visited[row][col]=0
-        return False
-# 注意需要用visited记录访问过的，防止往回走
-# 记住撤销visited，防止对后面造成影响(与回溯一样，递归后撤销path和visited)
-# 记得提前阻断，否则会超时。有一个为true，后面不用看了。
+        tmp=board[i][j] 
+        board[i][j] = '#'
+        l = self.dfs(board,word,i,j-1,pos+1,m,n)
+        r = self.dfs(board,word,i,j+1,pos+1,m,n)
+        t = self.dfs(board,word,i-1,j,pos+1,m,n)
+        b = self.dfs(board,word,i+1,j,pos+1,m,n)
+        board[i][j] = tmp
+        return l or r or t or b
+# 主逻辑（exist 方法）：
+# 遍历整个网格，每个点作为起点尝试搜索 word。
+# 如果某个起点可以成功匹配整个单词，则返回 True。
+
+# DFS 递归逻辑（dfs 方法）：
+# 1.边界检查：跳出越界的位置。
+# 2.访问检查：当前字符已经访问（标记为 #）则跳过。
+# 3.字符不匹配：直接返回 False。
+# 4.字符匹配且是最后一个字符：说明单词找到了，返回 True。
+# 5.递归搜索四个方向：上、下、左、右。
+# 6.回溯：恢复原字符，继续其他路径尝试。
