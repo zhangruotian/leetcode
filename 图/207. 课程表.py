@@ -41,3 +41,5 @@ class Solution:
         
 # 结果判断:
 # 检查最终是否所有课程的入度都变成了0。如果是，说明没有循环，返回 True。否则，存在循环，返回 False。
+
+# https://www.youtube.com/watch?v=fskPWs3Nuhc
