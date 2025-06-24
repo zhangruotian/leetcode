@@ -33,4 +33,4 @@ class WordDictionary:
             if cur.is_word:
                 return True
         return False
-# 79题加强版，用所有词创建trie。79题cur为一个node，本题注意搜索的时候cur可能有很多个node，需要把它们用list中，再往下走。
+# 208题加强版，用所有词创建trie。208题cur为一个node，本题注意搜索的时候cur可能有很多个node，需要把它们用list中，再往下走。
