@@ -1,7 +1,15 @@
 import numpy as np
-def linear_regression_closed_form(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+def linear_regression_closed_form(X: np.ndarray, y: np.ndarray):
     m, n = X.shape
     X_b = np.concatenate((np.ones((m, 1)), X), axis=1)
     theta = np.linalg.inv(X_b.T @ X_b) @ X_b.T @ y.reshape(-1, 1)
+    loss = (1 / m) * (X_b @ theta - y).T @ (X_b @ theta - y)
+    return theta.round(4).flatten().tolist(), loss.item()
+
+
+def linear_regression_closed_form_with_regularization(X: np.ndarray, y: np.ndarray, lambda_: float):
+    m, n = X.shape
+    X_b = np.concatenate((np.ones((m, 1)), X), axis=1)
+    theta = np.linalg.inv(X_b.T @ X_b + lambda_ * np.eye(n + 1)) @ X_b.T @ y.reshape(-1, 1)
     loss = (1 / m) * (X_b @ theta - y).T @ (X_b @ theta - y)
     return theta.round(4).flatten().tolist(), loss.item()
