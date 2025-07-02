@@ -1,7 +1,7 @@
 import numpy as np
-def linear_regression_normal_equation(X: list[list[float]], y: list[float]) -> list[float]:
-	# Your code here, make sure to round
-    X = np.array(X)
-    y = np.array(y)[:,np.newaxis]
-    theta = np.linalg.inv(X.T@X)@X.T@y
-    return np.round(theta.flatten(),4).tolist()
+def linear_regression_closed_form(X: np.ndarray, y: np.ndarray) -> np.ndarray:
+    m, n = X.shape
+    X_b = np.concatenate((np.ones((m, 1)), X), axis=1)
+    theta = np.linalg.inv(X_b.T @ X_b) @ X_b.T @ y.reshape(-1, 1)
+    loss = (1 / m) * (X_b @ theta - y).T @ (X_b @ theta - y)
+    return theta.round(4).flatten().tolist(), loss.item()
