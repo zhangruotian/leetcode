@@ -1,41 +1,34 @@
 import torch
+import torch.nn.functional as F
+import torch.nn as nn
 
 class MultiHeadAttention(nn.Module):
-
-    def __init__(self,embed_dim,num_heads):
+    def __init__(self,num_heads,D):
         super().__init__()
-        assert embed_dim % num_heads == 0
-
-        self.embed_dim = embed_dim
         self.num_heads = num_heads
-        self.head_dim = embed_dim // num_heads
-        self.scale = self.head_dim ** -0.5
-
-        self.w_qkv = nn.Linear(embed_dim, embed_dim * 3)
-        self.out_proj   = nn.Linear(embed_dim, embed_dim)
-
+        self.D = D 
+        self.qkv_w = nn.Linear(D,3*D)
+        self.head_D = self.D//self.num_heads
+        self.scale = self.head_D ** -0.5
+        self.out_proj = nn.Linear(D,D)
 
     def forward(self,x):
         # x(B,L,D)
-        B,L,_=x.shape
-        qkv = self.w_qkv(x) # B,L,3D
-        qkv = qkv.reshape(B, L, 3, self.num_heads, self.head_dim)  #B,L,3,H,HD
-        q,k,v = qkv.unbind(dim=2) # q (B,L,H,HD)
-        q, k, v = [t.transpose(1, 2) for t in (q, k, v)]   # q (B,H,L,HD)
+        B,L,_ = x.shape
+        qkv = self.qkv_w(x) # (B,L,3D)
+        qkv = qkv.view(B,L,3,self.num_heads,self.head_D)
+        q,k,v = qkv.unbind(2) # (B,L,num_heads,hD)
+        q,k,v = [m.transpose(1,2) for m in (q,k,v)] # (B,num_heads,L,hD)
 
-        attn_scores = torch.matmul(q, k.transpose(-2, -1)) * self.scale   # (B, H, L, L)
-        causal_mask = torch.triu(torch.ones(L, L), diagonal=1)
-        attn_scores = attn_scores.masked_fill(causal_mask, -1e9) # 将需要屏蔽的位置填充为负无穷
-        attn_probs  = F.softmax(attn_scores, dim=-1)
-        context = torch.matmul(attn_probs, v)  # (B, H, L, d_k) 
-        context = context.transpose(1, 2).reshape(B, L, self.embed_dim)  # (B, L, D)
+        attn = torch.matmul(q,k.transpose(-1,-2))*self.scale #(B,num_heads,L,L)
+        mask = torch.triu(torch.ones((L,L),dtype=torch.bool),1) 
+        attn = attn.masked_fill(mask,-1e9)
+        score = F.softmax(attn,-1) # #(B,num_heads,L,L)
+        print(score)
+        out = torch.matmul(score,v).transpose(1,2).reshape(B,L,self.D) #(B,num_heads,L,hD)
+        return self.out_proj(out)
 
-        out = self.out_proj(context)
-        return out, attn_probs
-        
-
-
-
-
-
+model = MultiHeadAttention(2,4)
+x = torch.rand(4,2,4)
+print(model(x))
 
