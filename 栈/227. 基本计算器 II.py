@@ -1,32 +1,29 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        # " 3 + 56 *56/ 56 -2 "
-        prev = '+'
-        i = 0 
-        stack = []
-        while i<len(s):
-            if s[i].isdigit():
-                num,new_i = self.get_num(s,i)
-                if prev=='+':
-                    stack.append(num)
-                if prev=='-':
-                    stack.append(-1*num)
-                if prev=='*':
-                    stack[-1] = stack[-1]*num
-                if prev=='/':
-                    stack[-1] = int(stack[-1]/num)
-                i = new_i
-                continue
-            if s[i] in {'+','-','*','/'}:
-                prev = s[i]
-            i+=1
+        # " -3+26 *23 /21 +2 "
+        s = s+'+'
+        stack = [0]
+        prev_op = '+'
+        for c in s:
+            if c==' ': continue
+            if not c.isdigit():
+                if prev_op=='-':
+                    stack[-1] = -1*stack[-1]
+                if prev_op=='*':
+                    stack[-2] = stack[-2]*stack[-1]
+                    stack.pop()
+                if prev_op=='/':
+                    stack[-2] = int(stack[-2]/stack[-1])
+                    stack.pop()
+                stack.append(0)
+                prev_op = c
+            else:
+                stack[-1] = stack[-1]*10+int(c)
         return sum(stack)
-
-    def get_num(self,s,i):
-        num = 0
-        while i<len(s) and s[i].isdigit():
-            num = num*10+ord(s[i])-ord('0')
-            i+=1
-        return num,i
+        
                 
 
+
+
+
+        
