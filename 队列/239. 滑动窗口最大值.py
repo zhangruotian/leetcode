@@ -1,17 +1,18 @@
 #单调队列 O(n)
 #https://www.youtube.com/watch?v=2SXqBsTR6a8
+from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        q=deque()
-        res=[]
+        q = deque()
+        res = []
         for i in range(len(nums)):
-            while q and nums[q[-1]]<=nums[i]:
-                q.pop()
-            q.append(i)
-            if i-q[0]==k:
+            if q and q[0][1]<=i-k:
                 q.popleft()
-            if i>=k-1:
-                res.append(nums[q[0]])
+            while q and q[-1][0]<=nums[i]:
+                q.pop()
+            q.append((nums[i],i))
+            if i+1>=k:
+                res.append(q[0][0])
         return res
 
 
