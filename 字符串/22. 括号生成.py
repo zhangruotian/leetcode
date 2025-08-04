@@ -1,42 +1,23 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
+        path, res = [],[]
         ps = ['(',')']
-        res, path = [],[]
-        self.dfs(ps,res,path,n,n,n)
+        self.dfs(ps,path,res,n,n)
         return res
     
-    def dfs(self,ps,res,path,n,l,r):
-        if len(path) == 2*n and l==0 and r==0:
-            res.append(''.join(path[:]))
-            return
-        for i in range(len(ps)):
-            if l<0 or r<0:
-                continue
-            if r<l:
-                continue
-            path.append(ps[i])
-            if ps[i]=='(':
-                self.dfs(ps,res,path,n,l-1,r)
-            else:
-                self.dfs(ps,res,path,n,l,r-1)
-            path.pop()
-# 回溯
-
-class Solution:
-    def generateParenthesis(self, n: int) -> List[str]:
-        res = []
-        self.helper(res,'',n,n)
-        return res
-    
-    def helper(self,res,item,l,r):
-        if l<0 or r<0:
+    def dfs(self,ps,path,res,l,r):
+        if l==0 and r==0:
+            res.append(''.join(path))
             return
         if r<l:
-            return 
-        if l==0 and r==0:
-            res.append(item)
             return
-        self.helper(res,item+'(',l-1,r)
-        self.helper(res,item+')',l,r-1)
-  # 左右括号不能用超，右括号不能比左括号先出现
+        if l<0:
+            return 
+        for p in ps:
+            path.append(p)
+            if p=='(':
+                self.dfs(ps,path,res,l-1,r)
+            if p==')':
+                self.dfs(ps,path,res,l,r-1)
+            path.pop()
   
