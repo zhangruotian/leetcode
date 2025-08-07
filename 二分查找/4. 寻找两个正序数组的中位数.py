@@ -1,35 +1,28 @@
 class Solution:
-    # 1 3 | 5
-    #   2 | 4 6
-
-    # 1 3 | 
-    #   2 |4 6
-
-    # 1
-    # 2 3 4
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        len1,len2 = len(nums1),len(nums2)
-        if len1>len2:
+        m,n = len(nums1),len(nums2)
+        if m>n:
             return self.findMedianSortedArrays(nums2,nums1)
-        if len1==0:
-            if len2%2==0:
-                return (nums2[(len2-1)//2]+nums2[(len2-1)//2+1])/2
-            else:
-                return nums2[(len2-1)//2]
-        l,r = -1,len1
+        if m==0:
+            return nums2[n//2] if n%2 else (nums2[n//2]+nums2[n//2-1])/2
+        l,r = -1,m
         while l<r:
-            m1 = (l+r-1)//2
-            nums1_left = nums1[m1] if m1>=0 else float('-inf')
-            nums1_right = nums1[m1+1] if m1+1<len1 else float('inf')
-            n1 = (len1+len2-1)//2-m1-1
-            nums2_left = nums2[n1] if n1>=0 else float('-inf')
-            nums2_right = nums2[n1+1] if n1+1<len2 else float('inf')
-            if nums1_left<=nums2_right and nums2_left<=nums1_right:
-                if (len1+len2)%2==0:
-                    return (max(nums1_left,nums2_left)+min(nums1_right,nums2_right))/2
-                else:
-                    return max(nums1_left,nums2_left)
-            if nums1_left>nums2_right:
-                r=m1
-            if nums2_left>nums1_right:
+            mid = (l+r-1)//2
+            left1 = nums1[mid] if mid>=0 else float('-inf')
+            right1 = nums1[mid+1] if mid+1<m else float('inf')
+            left2_index = (m+n-1)//2-mid-1
+            left2 = nums2[left2_index] if left2_index>=0 else float('-inf')
+            right2_index = left2_index+1
+            right2 = nums2[right2_index] if right2_index<n else float('inf')
+
+            if left1>right2:
+                r=mid
+            elif left2>right1:
+                l=mid+1
+            else:
+                break
+
+        if (m+n)%2:
+            return max(left2,left1)
+        return (max(left2,left1)+min(right1,right2))/2
                 l=m1+1
