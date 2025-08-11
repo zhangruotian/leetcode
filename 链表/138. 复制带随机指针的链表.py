@@ -8,24 +8,30 @@ class Node:
 """
 
 class Solution:
-    def copyRandomList(self, head: 'Node') -> 'Node':
-        if not head:return head
-        hashmap={}
-        cur=head
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        d = {}
+        cur = head
         while cur:
-            hashmap[cur]=Node(cur.val)
+            d[cur] = Node(cur.val)
+            cur = cur.next
+        cur = head
+        while cur:
+            new_node = d[cur]
+            if cur.next:
+                new_node.next = d[cur.next]
+            if cur.random:
+                new_node.random = d[cur.random]
             cur=cur.next
-        for ori_node,new_node in hashmap.items():
-            ori_next=ori_node.next
-            if not ori_next:
-                new_node.next=None
-            else:
-                new_node.next=hashmap[ori_next]
-            ori_random=ori_node.random
-            if not ori_random:
-                new_node.random=None
-            else:
-                new_node.random=hashmap[ori_random]
-        return hashmap[head]
-#hashmap
-#https://www.youtube.com/watch?v=oXABtaRa37U
+        return d[head] if d else None
+
+# Pass 1: Create Nodes & Map:
+# Create a hash map, let's call it old_to_new_map.
+# Iterate through the original list. For each old_node, create a new_node with the same value.
+# Store the mapping: old_to_new_map[old_node] = new_node.
+
+# Pass 2: Assign Pointers:
+# Iterate through the original list again.
+# For each old_node:
+# Get its copy: new_node = old_to_new_map[old_node].
+# Set the next pointer: new_node.next = old_to_new_map.get(old_node.next). Using .get() handles the case where old_node.next is None.
+# Set the random pointer: new_node.random = old_to_new_map.get(old_node.random).
