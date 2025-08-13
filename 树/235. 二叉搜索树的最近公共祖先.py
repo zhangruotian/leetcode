@@ -7,22 +7,16 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        path_p = []
-        path_q = []
-        self.bs(root,p,path_p)
-        self.bs(root,q,path_q)     
-        res = 0
-        for i in range(min(len(path_p),len(path_q))):
-            if path_p[i].val == path_q[i].val:
-                res=i 
-        return path_p[res]
-    
-    def bs(self,root,t,path):
-        path.append(root)
-        if root.val<t.val:
-            self.bs(root.right,t,path)
-        if root.val>t.val:
-            self.bs(root.left,t,path)
-        if root.val==t.val:
-            return 
-# https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/solutions/428633/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-26/
+        cur = root
+        while cur:
+            if p.val<cur.val and q.val<cur.val:
+                cur = cur.left
+            elif p.val>cur.val and q.val>cur.val:
+                cur = cur.right
+            else:
+                break
+        return cur
+
+# search的过程中，在前面几个node时，p和q的决策是一致的（都要往左，都要往右）。第一次p和q要分开的时候，就是我们要找的最近公共祖先。
+# 这里注意要用elif，以防同一个loop运行两个分支。上面改了cur，下面要用cur的时候cur以及变了。
+# 当我们明确要求只能进同一个分支，而且判断的var的值可能提前改变的情况下，一定要用elif。
