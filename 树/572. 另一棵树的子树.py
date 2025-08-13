@@ -4,23 +4,20 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
+class Solution:   
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         if not root:
             return False
-        if self.isSame(root,subRoot):
+        return self.isSametree(root,subRoot) or self.isSubtree(root.left,subRoot) or self.isSubtree(root.right,subRoot)
+
+    def isSametree(self,p,q):
+        if not p and not q:
             return True
-        return self.isSubtree(root.left,subRoot) or self.isSubtree(root.right,subRoot)
-         
-    def isSame(self,root1,root2):
-        if not root1 and not root2:
-            return True
-        if root1 and not root2:
+        if not p or not q:
             return False
-        if root2 and not root1:
+        if p.val != q.val:
             return False
-        if root1.val != root2.val:
-            return False
-        return self.isSame(root1.left,root2.left) and self.isSame(root1.right,root2.right)
+        return self.isSametree(p.left,q.left) and self.isSametree(p.right,q.right)
+# 跟100题same tree有点像，但这个需要在每一个node都判断一下
 
 # dfs的过程中判断是否当前的root是不是和subRoot一样，如果找到一样的了，说明最顶部的root里面包含subRoot。
