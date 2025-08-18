@@ -1,64 +1,49 @@
+# 
+import heapq
 class Solution:
-    #  0
-    # 1 2
-    #3 4 5
-    # left = 2*i+1, right = 2*i+2
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        self.heapify(nums)
-        for i in range(len(nums)-1,-1,-1):
-            nums[i],nums[0] = nums[0],nums[i]
-            self.swap_with_sons(nums,0,i-1)
-        return nums[-k]
-
-    
-    def swap_with_sons(self,nums,i,r):
-        left_index = 2*i+1
-        right_index = 2*i+2
-        max_index = i
-        if left_index<=r and nums[left_index] > nums[max_index]:
-            max_index = left_index
-        if right_index<=r and nums[right_index] > nums[max_index]:
-            max_index = right_index
-        if max_index==i:
-            return
-        nums[max_index], nums[i] = nums[i],nums[max_index]
-        self.swap_with_sons(nums,max_index,r)
-    
-    def heapify(self,nums):
-        for i in range(len(nums)-1,-1,-1):
-            self.swap_with_sons(nums,i,len(nums)-1)
-
-
-
+        min_heap = nums[:k]
+        heapq.heapify(min_heap)
+        for i in range(k,len(nums)):
+            heapq.heappush(min_heap,nums[i])
+            heapq.heappop(min_heap)
+        return min_heap[0]
+        
+# 自己实现
 class Solution:
-    #  0
-    # 1 2
-    #3 4 5
-    # left = 2*i+1, right = 2*i+2
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        pos = len(nums)-k
-        self.heapify(nums)
-        for i in range(len(nums)-1,-1,-1):
-            nums[i],nums[0] = nums[0],nums[i]
-            if i ==pos:
-                return nums[i]
-            self.swap_with_sons(nums,0,i-1)
-
-    def swap_with_sons(self,nums,i,r):
-        left_index = 2*i+1
-        right_index = 2*i+2
-        max_index = i
-        if left_index<=r and nums[left_index] > nums[max_index]:
-            max_index = left_index
-        if right_index<=r and nums[right_index] > nums[max_index]:
-            max_index = right_index
-        if max_index==i:
-            return
-        nums[max_index], nums[i] = nums[i],nums[max_index]
-        self.swap_with_sons(nums,max_index,r)
+        #   0
+        #  1  2
+        # 3 4
+        # 2*i+1  2*i+2
+        min_heap = nums[:k]
+        self.heapify(min_heap)
+        for i in range(k,len(nums)):
+            if nums[i]>min_heap[0]:
+                min_heap[0] = nums[i]
+                self.swap_with_sons(min_heap,0)
+        return min_heap[0]
     
-    def heapify(self,nums):
-        for i in range(len(nums)-1,-1,-1):
-            self.swap_with_sons(nums,i,len(nums)-1)
-
-# 找到倒数第k个停止
+    def heapify(self,min_heap):
+        for i in range(len(min_heap)-1,-1,-1):
+            self.swap_with_sons(min_heap,i)
+            
+    def swap_with_sons(self,min_heap,i):
+        l = 2*i+1
+        r = 2*i+2
+        val = min_heap[i]
+        if l>=len(min_heap):
+            return
+        elif r<len(min_heap):
+            val_l = min_heap[l]
+            val_r = min_heap[r]
+            min_lr = l 
+            if val_l>val_r:
+                min_lr = r 
+            if val>min_heap[min_lr]:
+                min_heap[i],min_heap[min_lr] = min_heap[min_lr],min_heap[i]
+                self.swap_with_sons(min_heap,min_lr)
+        else:
+            if val>min_heap[l]:
+                min_heap[i],min_heap[l] = min_heap[l],min_heap[i]
+                self.swap_with_sons(min_heap,l)
