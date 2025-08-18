@@ -1,4 +1,5 @@
-# 
+# 第k大元素，维护小顶堆，只有新元素大于min_heap[0]的时候，弹出min_heap[0]，压入新元素。这样就能确定保持小顶堆中是到目前为止，最大的k的元素，且min_heap[0]是最小的(第k小)
+# O(nlogk)
 import heapq
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
@@ -10,6 +11,8 @@ class Solution:
         return min_heap[0]
         
 # 自己实现
+# pushandpop只需要把min_heap[0]换成新元素，然后对index 0 往下swap就行。
+# O(nlogk)
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         #   0
