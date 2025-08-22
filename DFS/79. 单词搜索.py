@@ -3,29 +3,29 @@ class Solution:
         m,n = len(board),len(board[0])
         for i in range(m):
             for j in range(n):
-                if self.dfs(board,word,i,j,0,m,n):
+                if board[i][j]==word[0] and self.dfs(board,word,i,j,m,n,0):
                     return True
         return False
     
-    def dfs(self,board,word,i,j,pos,m,n):
-        if i<0 or i>=m:
-            return False
-        if j<0 or j>=n:
-            return False
-        if board[i][j] == '#':
-            return False
-        if board[i][j]!=word[pos]:
-            return False
-        if board[i][j]==word[pos] and pos==len(word)-1:
+    def dfs(self,board,word,i,j,m,n,pos):
+        if pos>=len(word):
             return True
-        tmp=board[i][j] 
-        board[i][j] = '#'
-        l = self.dfs(board,word,i,j-1,pos+1,m,n)
-        r = self.dfs(board,word,i,j+1,pos+1,m,n)
-        t = self.dfs(board,word,i-1,j,pos+1,m,n)
-        b = self.dfs(board,word,i+1,j,pos+1,m,n)
-        board[i][j] = tmp
-        return l or r or t or b
+        if i<0 or i>=m or j<0 or j>=n:
+            return False
+        if word[pos]!=board[i][j]:
+            return False
+        if board[i][j]=='1':
+            return False
+        char = board[i][j]
+        board[i][j] = '1'
+        directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+        for di, dj in directions:
+            next_i, next_j = i + di, j + dj
+            if self.dfs(board,word,next_i,next_j,m,n,pos+1):
+                return True
+        board[i][j] = char
+        return False
+        
 # 主逻辑（exist 方法）：
 # 遍历整个网格，每个点作为起点尝试搜索 word。
 # 如果某个起点可以成功匹配整个单词，则返回 True。
