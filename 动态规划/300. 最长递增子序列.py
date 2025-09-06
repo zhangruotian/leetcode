@@ -12,28 +12,27 @@ class Solution:
         return max(res)
         
 # T:O(n^2) S:O(n)
-# youtube.com/watch?v=fV-TF4OvZpk
 
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        res=[]
-        for i in nums:
-            if not res or i>res[-1]:
-                res.append(i)
+        res = [nums[0]]
+        for i in range(1,len(nums)):
+            lower = self.lower_bound(res,nums[i])
+            if lower==len(res):
+                res.append(nums[i])
             else:
-                self.lower_bound(res,i)
+                res[lower] = nums[i]
         return len(res)
-
-    def lower_bound(self,nums,x):
-        l=0
-        r=len(nums)
+    
+    def lower_bound(self,nums,target):
+        l,r = 0,len(nums)
         while l<r:
-            m=(l+r-1)//2
-            if nums[m]<x:
-                l=m+1
-            else:
+            m = (l+r-1)//2
+            if target<=nums[m]:
                 r=m
-        nums[l]=x
+            else:
+                l=m+1
+        return l 
 # res[]里面放到目前为止的最优序列（可能不属于sub sequence，但是长度结果是正确的）
 # 方法：如果新值大于res[-1]，res接上
 # 如果新值小于或等于res[-1],二分查找 lower_bound,替换res[x]。
