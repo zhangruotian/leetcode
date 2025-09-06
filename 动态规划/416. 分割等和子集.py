@@ -19,3 +19,4 @@ class Solution:
         return False
 # 跟322 coin change相似，但是那个题每个coin能无限次数使用，本题每个num最多使用一次，把for coin in coins放到外面，能保证每个coin只用一次。
 # 注意，eg nums[2,8]，2把dp[2]改了True之后，dp[4]也会得到True，相当于2用了两次，错误。应该对每个来说，都用上个coin的dp结果，而不是当前dp结果。
+# https://www.youtube.com/watch?v=z_VLFGzQQtk
