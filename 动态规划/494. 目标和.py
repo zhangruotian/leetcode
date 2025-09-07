@@ -1,25 +1,35 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        #dp[i][j]=dp[i-1][j-nums[i]]+dp[i-1][j+nums[i]]
-        #dp[0][0]=1
-        if sum(nums)<target:return 0
-        dp=[[0]*(2*sum(nums)+1) for _ in range(len(nums)+1)]
-        dp[0][0]=1
-        for i in range(1,len(nums)+1):
-            for j in range(-sum(nums),sum(nums)+1):
-                dp[i][j]=dp[i-1][j-nums[i-1]]+dp[i-1][j+nums[i-1]]
-        return dp[-1][target]
+        # [1,2]
+        # [0,0,1,0,1,0,0]
+        # [1]
+        # [0,1,0]
+        # [1,1,1] target=1
+        # [1,0,2,0,2,0,1]
+        # [1,0,0] 1
+        # [2,0,2]
+        # [1,2,1] target=0
+        # [0,1,0,1,0,1,0,0,0]
+        sum_ = sum(nums)
+        if target>sum_ or target<-sum_:
+            return 0
+        dp_len = 2*sum_+1
+        dp = [0]*(dp_len)
+        mid = dp_len//2
+        dp[mid] = 1
 
-#return self.findTargetSumWays(nums[1:],target-nums[0])+neg=self.findTargetSumWays(nums[1:],target+nums[0])
-#递归超时，改写为dp
-#dp[i][j]=dp[i-1][j-nums[i]]+dp[i-1][j+nums[i]]
-#dp[i][j]表示用前i个数计算得到j一共有多少种方法
-#当nums[i]前面符号为正，dp[i][j]=dp[i-1][j-nums[i]]
-#当nums[i]前面符号为负，dp[i][j]=dp[i-1][j+nums[i]]
-#总共方法数为两者之和
-
-# dp有2*sum(nums)+1列，例如[1,1,1]，j的范围为-3～3
-# dp有len(nums)+1行，包括i=0
-# 初始化dp[0][0]=1。
-# dp与nums之间有offset,dp[i][j]=dp[i-1][j-nums[i-1]]+dp[i-1][j+nums[i-1]]
-# 记得-1
+        for num in nums:
+            dp_new = [0]*(dp_len)
+            for i in range(dp_len):
+                if dp[i]!=0:
+                    if num==0:
+                        dp_new[i] = dp[i]*2
+                    else:
+                        dp_new[i+num]+=dp[i]
+                        dp_new[i-num]+=dp[i]
+            dp=dp_new
+        return dp[mid+target]
+# 能够得到的range为-sum(nums)～sum(nums)。initial 一个长度为这个range的dp数组，dp[i]代表到目前的num为止，i能不能被拼出来。
+# 逐渐看更多的num，更新dp，看看哪些值开始可以被拼出来。记得把上的num能拼出来的i set为0，如果当前num不为0的话。
+# 注意num=0和!=0的区别处理。
+# 不能直接在dp上改，因为改了dp[x]之后，可能从0变成了不是0，会进入循环，导致错误。
