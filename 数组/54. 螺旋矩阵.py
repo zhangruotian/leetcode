@@ -1,52 +1,23 @@
 class Solution:
     def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
-        res=[]
-        left,top=0,0
-        bottom=len(matrix)-1
-        right=len(matrix[0])-1
-        while left<=right and top<=bottom:
-            if left<right and top<bottom:
-                res+=matrix[top][left:right+1]
-                for i in range(top+1,bottom):
-                    res.append(matrix[i][right])
-                res+=matrix[bottom][left:right+1][::-1]
-                for i in range(bottom-1,top,-1):
-                    res.append(matrix[i][left])
-            if top==bottom and left<=right:
-                res+=matrix[top][left:right+1]
-            if left==right and top<bottom:
-                for i in range(top,bottom+1):
-                    res.append(matrix[i][left])
-            left+=1
-            top+=1
-            right-=1
-            bottom-=1
-        return res
-# 旧代码
-
-class Solution:
-    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
         res = []
-        top, bot, left, right = 0, len(matrix)-1, 0, len(matrix[0])-1
-        while bot>=top and right>=left:
-            top, bot, left, right = self.spiralCircle(matrix, top, bot, left, right,res)
+        m,n = len(matrix),len(matrix[0])
+        for i in range(min(m+1,n+1)//2):
+            self.spiralone(i,i,matrix,res,m,n)
         return res
+    
+    def spiralone(self,start_i,start_j,matrix,res,m,n):
+        end_i,end_j = m-start_i-1,n-start_j-1
+        for j in range(start_j,end_j+1):
+            res.append(matrix[start_i][j])
+        for i in range(start_i+1,end_i+1):
+            res.append(matrix[i][end_j])
+        for j in range(end_j-1,start_j-1,-1):
+            if start_i!=end_i:
+                res.append(matrix[end_i][j])
+        for i in range(end_i-1,start_i,-1):
+            if start_j!=end_j:
+                res.append(matrix[i][start_j])
 
-    def spiralCircle(self, matrix, top, bot, left, right,res):
-        if bot>=top+1 and right>=left+1:
-            for j in range(left,right+1):
-                res.append(matrix[top][j])
-            for i in range(top+1, bot):
-                res.append(matrix[i][right])
-            for p in range(right, left-1,-1):
-                res.append(matrix[bot][p])
-            for q in range(bot-1, top, -1):
-                res.append(matrix[q][left])
-        if bot == top and right>=left:
-            for i in range(left, right+1):
-                res.append(matrix[top][i])
-        if bot>=top+1 and right==left:
-            for i in range(top, bot+1):
-                res.append(matrix[i][left])
-        return top+1,bot-1,left+1,right-1
-# 新代码
+# 提前算好初始点的位置
+# 注意处理剩一行或者一列的情况。
