@@ -21,6 +21,7 @@ class LinearRegression:
         I[0][0]=0
         self.theta = np.linalg.inv(self.X_b.T@self.X_b+self.lambda_*I)@self.X_b.T@y
 
+
     def train(self):
         for _ in range(self.epochs):
             pred = self.X_b@self.theta
@@ -32,7 +33,7 @@ class LinearRegression:
             self.theta -= self.lr*grad
 
     def predict(self,X):
-        X_b = np.concatenate((np.ones((self.X.shape[0],1)),X),axis = 1)
+        X_b = np.concatenate((np.ones((X.shape[0],1)),X),axis = 1)
         a = X_b@self.theta 
         return X_b@self.theta 
 
