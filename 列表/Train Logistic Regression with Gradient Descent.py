@@ -1,57 +1,65 @@
+# for one datapoint
+# h(x) = sigmoid(xw)  L = -y*ln(h(x)) - (1-y)*ln(1-h(x))  dsig/dx = sig(x)(1-sig(x))
+# dL/dw = dL/dh* dh/dsig * dsig/dw
+# dL/dh = -y/h(x)+(1-y)/(1-h(x))
+# dh/dsig = h(x)(1-h(x))
+# dL/dh*dh/dsig = yh(x)-y-yh(x)+h(x) = h(x)-y
+# dL/dh*dh/dsig* dsig/dw = (h(x)-y)*x
+
+# for all data
+# grad = X.T @ (sigmoid(X@theta)-y) pred = sigmoid(X@theta) diff = pred-y
+# grad = 1/m * X.T @ diff
+import numpy as np 
 import matplotlib.pyplot as plt
-import numpy as np
-
-class LogisicRegression:
-    def __init__(self, X, y, lambda_, num_epochs, lr):
-        self.X = X
-        self.y = y.reshape(-1, 1)
-        self.n, self.d = X.shape
-        self.X_b = np.concatenate((np.ones((self.n, 1)), self.X), axis=1)
-        self.theta = np.zeros((self.d + 1, 1))
+class LogisticRegression:
+    def __init__(self,X,y,theta=None,lambda_=0.01, lr=0.001):
+        self.X = X #(n,d)
+        self.X_b = np.concatenate((np.ones((X.shape[0],1)),X),axis=1)
+        self.n,self.d = self.X_b.shape
+        self.y = y
+        self.theta = np.zeros((self.d,1))
         self.lambda_ = lambda_
-        self.num_epochs = num_epochs
-        self.lr = lr
+        self.lr = lr 
 
-    def train(self):
-        for _ in range(self.num_epochs):
-            pred = self.sigmoid(self.X_b @ self.theta)
-            loss = (1 / self.n) * (
-                -np.sum(self.y * np.log(pred)) - np.sum((1 - self.y) * np.log(1 - pred))
-            ) + (1 / self.n) * self.lambda_ * np.sum(self.theta[1:] ** 2)
-            print(loss)
-            diff = pred - self.y
+    def train(self,num_epoch):
+        for _ in range(num_epoch):
+            pred = self.sigmoid(self.X_b@self.theta)
+            diff = pred-y
             theta_w = np.copy(self.theta)
-            theta_w[0, 0] = 0
-            grad = (1 / self.n) * (self.X_b.T @ diff) + (
-                1 / self.n
-            ) * self.lambda_ * theta_w
-            self.theta -= self.lr * grad
+            theta_w[0][0]=0
+            loss = 1/self.n*(np.sum(-1*np.log(pred[y==1])) + np.sum(-1*np.log(1-pred[y==0]))+self.lambda_*sum(theta_w**2))
+            print(loss)
+            grad = 1/self.n*(self.X_b.T@diff+self.lambda_ *theta_w)
+            self.theta = self.theta - self.lr*grad
 
-    def sigmoid(self, v):
-        return 1 / (1 + np.exp(-1 * v))
+    def predict(self,x):
+        x_b = np.concatenate((np.ones((1,1)),x),axis=1)
+        prob = self.sigmoid(x_b@self.theta)[0][0]
+        print(prob)
+        return 1 if prob>=0.5 else 0
 
-    def predict(self, data):
-        data = np.concatenate((np.ones((data.shape[0], 1)), data), axis=1)
-        pred = self.sigmoid(data @ self.theta)
-        return np.round(pred)
+    def sigmoid(self,v):
+        return 1/(np.exp(-1*v)+1)
 
+if __name__ == '__main__':
+    X0 = np.random.normal(size=(100,2))-1
+    y0 = np.zeros((100,1))
+    X1 = np.random.normal(size=(100,2))+1
+    y1 = np.ones((100,1))
+    X = np.concatenate((X0,X1),axis=0)
+    y = np.concatenate((y0,y1),axis=0)
+    model = LogisticRegression(X,y)
+    model.train(10000)
+    print(model.predict(np.array([[-1,-1]])))
+    print(model.predict(np.array([[1,1]])))
 
-if __name__ == "__main__":
-    np.random.seed(42)  # 使用种子确保每次运行结果一致
-    num_points = 100
-    X0 = np.random.randn(num_points,2)-1
-    y0 = np.zeros((num_points,1))
-    X1 = np.random.randn(num_points,2)+1
-    y1 = np.ones((num_points,1))
-    X_train = np.vstack((X0,X1))
-    y_train = np.vstack((y0,y1))
-    model = LogisicRegression(X_train,y_train,0.1,1000,0.01)
-    model.train()
-    plt.scatter(X0[:,0],X0[:,1],color = 'blue')
-    plt.scatter(X1[:,0],X1[:,1],color = 'red')
     x0_line = np.linspace(-10,10,100)
     b,theta1,theta2 = model.theta
-    # b+theta1*x0+theta2*x1 = 0
-    x1_line = (-b-theta1*x0_line)/theta2
+    # 在分割线上的data x，wx=0，因此有 b+x0*theta1+x1*theta2 = 0
+    # 可计算出 x1 = (-b-x0*theta1)/theta2
+    x1_line = (-b-x0_line*theta1)/theta2
     plt.plot(x0_line,x1_line)
+    plt.scatter(X0[:,0],X0[:,1],color='red')
+    plt.scatter(X1[:,0],X1[:,1],color='blue')
     plt.show()
+
