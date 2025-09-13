@@ -1,27 +1,19 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        intervals.append([float('inf'),float('inf')])
-        intervals.insert(0,[float('-inf'),float('-inf')])
-        res = []
-        n = len(intervals)
-        for i in range(n-1):
-            if intervals[i][0]<=newInterval[0]<=intervals[i+1][0]:
-                if intervals[i][0]<=newInterval[0]<=intervals[i][1]:
-                    res.append(self.merge(newInterval,intervals[i]))
-                else:
-                    res.append(intervals[i])
-                    res.append(newInterval)
-                break
+        insert_index = 0
+        starts=[0]+list(map(lambda x:x[0],intervals))+[float('inf')]
+        for i in range(1,len(starts)):
+            if starts[i-1]<=newInterval[0]<=starts[i]:
+                insert_index = i-1
+        intervals.insert(insert_index,newInterval)
+        res = [intervals[0]]
+        for i in range(1,len(intervals)):
+            if res[-1][1]>=intervals[i][0]:
+                res[-1] = [res[-1][0],max(res[-1][1],intervals[i][1])]
             else:
                 res.append(intervals[i])
-        i+=1
-        while i<n:
-            if res[-1][0]<=intervals[i][0]<=res[-1][1]:
-                res[-1] = self.merge(res[-1],intervals[i])
-            else:
-                res.append(intervals[i])
-            i+=1
-        return res[1:-1]
-    
-    def merge(self,interval1,interval2):
-        return [min(interval1[0],interval2[0]), max(interval1[1],interval2[1])]
+        return res
+                
+        
+            
+
