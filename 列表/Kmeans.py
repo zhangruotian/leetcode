@@ -1,40 +1,36 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+class Kmeans:
+    def __init__(self,k):
+        self.k = k 
 
-def k_means_clustering(X,k,num_iter):
-    n,d = X.shape
-    centroids = X[np.random.choice(n, size=k, replace=False)]
-    for _ in range(num_iter):
-        distances = np.array([np.sqrt(((X-centroid)**2).sum(axis=1)) for centroid in centroids])
-        assignments = np.argmin(distances,axis=0)
-        
-        loss=0
-        for i in range(n):
-            loss+=distances[assignments[i],i]
-        print(loss)
+    def train(self,X,num_steps):
+        n,d = X.shape
+        centroids = X[np.random.choice(n,self.k,replace=False)] #centroids (k,d)
+        X_expanded = np.expand_dims(X,axis=1) #X(n,1,d)
+        for _ in range(num_steps):
+            new_centroids = np.zeros_like(centroids)
+            dists = np.linalg.norm(X_expanded-centroids,axis=2) # dists (n,k)
+            assign = np.argmin(dists,axis=1) #assign (n,)
 
-        new_centroids = np.zeros((k,d))
-        for i in range(k):
-            cluster_points = X[assignments==i]
-            if len(cluster_points)>0:
-                new_centroids[i]=cluster_points.mean(0)
-            else:
-                new_centroids[i] = centroids[i]
+            for i in range(self.k):
+                new_centroids[i] = np.mean(X[assign==i],axis=0)
 
-        if np.all(centroids==new_centroids):
-            break
-            
-        centroids = new_centroids
-    return centroids, assignments
+            if np.all(centroids==new_centroids):
+                break
+            centroids = new_centroids
+        return assign,centroids
 
-np.random.seed(0)
-points_per_cluster = 50
-cluster1 = np.random.randn(points_per_cluster, 2) + np.array([0, 0])
-cluster2 = np.random.randn(points_per_cluster, 2) + np.array([8, 8])
-cluster3 = np.random.randn(points_per_cluster, 2) + np.array([0, 10])
-X = np.vstack([cluster1, cluster2, cluster3])
-k = 3
-num_iter = 100
-final_centroids, final_assignments = k_means_clustering(X, k, num_iter)
-plt.scatter(X[:, 0], X[:, 1], c=final_assignments)
-plt.show()
+if __name__ == '__main__':
+    X1 = np.random.normal(5,0.5,(50,2))
+    X2 = np.random.normal(0,0.5,(50,2))
+    X3 = np.random.normal(-5,0.5,(50,2))
+    X = np.concatenate((X1,X2,X3),axis=0)
+    model = Kmeans(3)
+    assign,_=model.train(X,100)
+    print(assign)
+    plt.scatter(X[:,0],X[:,1],c=assign.flatten())
+    plt.show()
+
+
+ 
