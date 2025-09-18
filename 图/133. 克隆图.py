@@ -31,26 +31,24 @@ class Solution:
         return created[1]
       # bfs traverse的途中创建克隆节点
 
+
 from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        if not node: return None
         visited = {}
-        return self.dfs(node,visited)
-        
-    def dfs(self,node,visited):
-        if not node:
-            return None
-        if node.val in visited:
-            return visited[node.val]
-        
-        new_node = Node(val=node.val)
-        visited[node.val] = new_node
+        new_node_prev = Node()
+        self.dfs(node,new_node_prev,visited)
+        return visited[1]
 
-        for neighbor in node.neighbors:
-            new_neighbor = self.dfs(neighbor,visited)
-            if new_neighbor:
-                new_node.neighbors.append(new_neighbor)
-        return new_node
+    def dfs(self,ori_node,new_node_prev,visited):
+        if ori_node.val in visited:
+            visited[ori_node.val].neighbors.append(new_node_prev)
+            return
+        new_node = Node(ori_node.val)
+        visited[ori_node.val]=new_node
+        if new_node_prev.val!=0:
+            new_node.neighbors.append(new_node_prev)
+        for neighbor in ori_node.neighbors:
+            self.dfs(neighbor,new_node,visited)
 # dfs
-
-
