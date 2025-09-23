@@ -23,7 +23,7 @@ class SelfAttention(nn.Module):
         attn = attn.masked_fill(mask,-1e9)
         score = F.softmax(attn,-1) # score (B,#heads,L,L)
         out = score@v # attn (B,#heads,L,head_d)
-        out = out.transpose(1,2).reshape(B,L,self.D)
+        out = out.transpose(1,2).contiguous().view(B,L,self.D)
         return self.proj(out)
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -31,4 +31,3 @@ print(device)
 model = SelfAttention(1024, 8).to(device)
 X = torch.rand(16, 512, 1024).to(device)
 print(model(X))
-
