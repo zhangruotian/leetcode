@@ -1,65 +1,58 @@
-# for one datapoint
-# h(x) = sigmoid(xw)  L = -y*ln(h(x)) - (1-y)*ln(1-h(x))  dsig/dx = sig(x)(1-sig(x))
-# dL/dw = dL/dh* dh/dsig * dsig/dw
-# dL/dh = -y/h(x)+(1-y)/(1-h(x))
-# dh/dsig = h(x)(1-h(x))
-# dL/dh*dh/dsig = yh(x)-y-yh(x)+h(x) = h(x)-y
-# dL/dh*dh/dsig* dsig/dw = (h(x)-y)*x
-
-# for all data
-# grad = X.T @ (sigmoid(X@theta)-y) pred = sigmoid(X@theta) diff = pred-y
-# grad = 1/m * X.T @ diff
-import numpy as np 
+# logistic regression
+# p(x)=sig(wx) dp/dw = sig(wx)(1-sig(wx))*x = p(x)(1-p(x))x
+# L = -y*ln(p(x))-(1-y)*ln(1-p(x))
+# dL/dw = -y/p(x) *dp/dw+(1-y)/1-p(x)*dp/dw = -y(1-p(x))+(1-y)p(x)= p(x)y-y-p(x)y+p(x)=x(p(x)-y) = x(pred-y)=x(diff)
+import numpy as np
 import matplotlib.pyplot as plt
+
 class LogisticRegression:
-    def __init__(self,X,y,theta=None,lambda_=0.01, lr=0.001):
-        self.X = X #(n,d)
-        self.X_b = np.concatenate((np.ones((X.shape[0],1)),X),axis=1)
-        self.n,self.d = self.X_b.shape
-        self.y = y
-        self.theta = np.zeros((self.d,1))
-        self.lambda_ = lambda_
+
+    def __init__(self,X,y,lambda_,lr):
+        self.n,_ = X.shape
+        self.X_b = np.concatenate((np.ones((self.n,1)),X),axis=1) 
+        _,self.d = self.X_b.shape
+        self.y = y 
+        self.theta = np.ones((self.d,1))
+        self.lambda_=lambda_
         self.lr = lr 
 
-    def train(self,num_epoch):
+    def train(self, num_epoch):
         for _ in range(num_epoch):
             pred = self.sigmoid(self.X_b@self.theta)
-            diff = pred-y
+            diff = pred-self.y  #diff(n,1)
             theta_w = np.copy(self.theta)
-            theta_w[0][0]=0
-            loss = 1/self.n*(np.sum(-1*np.log(pred[y==1])) + np.sum(-1*np.log(1-pred[y==0]))+self.lambda_*sum(theta_w**2))
+            theta_w[0,0]=0
+            grad = 1/self.n*(self.X_b.T@diff+self.lambda_*theta_w)
+            self.theta -= self.lr*grad
+            loss1 = np.sum(-1*np.log(pred[self.y==1]))
+            loss0 = np.sum(-1*np.log(1-pred[self.y==0]))
+            loss = 1/self.n*(loss0+loss1)+0.5/self.n*(self.lambda_*theta_w.T@theta_w)
             print(loss)
-            grad = 1/self.n*(self.X_b.T@diff+self.lambda_ *theta_w)
-            self.theta = self.theta - self.lr*grad
-
-    def predict(self,x):
-        x_b = np.concatenate((np.ones((1,1)),x),axis=1)
-        prob = self.sigmoid(x_b@self.theta)[0][0]
-        print(prob)
-        return 1 if prob>=0.5 else 0
 
     def sigmoid(self,v):
-        return 1/(np.exp(-1*v)+1)
+        # v(n,1)
+        return 1/(1+np.exp(-1*v))
+
+    def predict(self,X):
+        X_b = np.concatenate((np.ones((X.shape[0],1)),X),axis=1) 
+        preds = self.sigmoid(X_b@self.theta)
+        return 1 if np.squeeze(preds)>=0.5 else 0
 
 if __name__ == '__main__':
-    X0 = np.random.normal(size=(100,2))-1
-    y0 = np.zeros((100,1))
-    X1 = np.random.normal(size=(100,2))+1
-    y1 = np.ones((100,1))
-    X = np.concatenate((X0,X1),axis=0)
-    y = np.concatenate((y0,y1),axis=0)
-    model = LogisticRegression(X,y)
-    model.train(10000)
-    print(model.predict(np.array([[-1,-1]])))
-    print(model.predict(np.array([[1,1]])))
+    X_1 = np.random.normal((1,1),1,(100,2))
+    y_1 = np.ones((100,1))
+    X_2 = np.random.normal((-1,-1),1,(100,2))
+    y_2 = np.zeros((100,1))
+    X = np.concatenate((X_1,X_2),axis=0)
+    y = np.concatenate((y_1,y_2),axis=0)
+    plt.scatter(X_1[:,0],X_1[:,1],color='blue')
+    plt.scatter(X_2[:,0],X_2[:,1],color='green')
+    model=LogisticRegression(X,y,0.1,0.01)
+    model.train(1000)
+    xline_1 = np.linspace(-2,2,100)
+    xline_2=(-model.theta[0,0] - model.theta[1,0] * xline_1) / model.theta[2,0]
+    plt.plot(xline_1,xline_2)
 
-    x0_line = np.linspace(-10,10,100)
-    b,theta1,theta2 = model.theta
-    # 在分割线上的data x，wx=0，因此有 b+x0*theta1+x1*theta2 = 0
-    # 可计算出 x1 = (-b-x0*theta1)/theta2
-    x1_line = (-b-x0_line*theta1)/theta2
-    plt.plot(x0_line,x1_line)
-    plt.scatter(X0[:,0],X0[:,1],color='red')
-    plt.scatter(X1[:,0],X1[:,1],color='blue')
+    X_test = np.array([[1,1]])
+    print(model.predict(X_test))
     plt.show()
-
