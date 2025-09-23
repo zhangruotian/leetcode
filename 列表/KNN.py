@@ -1,49 +1,39 @@
-import numpy as np
-from matplotlib import pyplot as plt
-# KNN  X_train(n,d) y_train(n,1) X_test(m,d)
+# KNN
+import numpy as np 
+import matplotlib.pyplot as plt 
 class KNN:
 
-    def __init__(self,k):
+    def __init__(self,k,X,y):
         self.k = k 
-        
-    def train(self,X_train,y_train):
-        self.X_train = X_train
-        self.y_train = y_train
-        self.n,self.d = self.X_train.shape
-
-    def row_counts(self,row):
-        vals, counts = np.unique(row,return_counts=True)
-        return vals[np.argmax(counts)]
+        self.X = X #X(n,d)
+        self.n,self.d = X.shape
+        self.y = y #y(n,1)
 
     def predict(self,X_test):
-        m,_ = X_test.shape 
-        X_test = np.expand_dims(X_test,axis=1) #(m,1,d)
-        dists = np.linalg.norm(self.X_train-X_test,axis=2) #(m,n,d)->(m,n)
-        top_k = np.argsort(dists,axis=1)[:,:self.k] #(m,k)
-        preds = self.y_train.flatten()[top_k] #(m,k)
-        return np.apply_along_axis(self.row_counts,1,preds).reshape(-1,1)
+        
+        X_test=np.expand_dims(X_test,1) # X_test(m,1,d)
+        dists = np.linalg.norm(X_test-self.X,axis=2) #(m,n)
+        k_neighbors = np.argsort(dists,axis=1)[:,:self.k] #(m,k)
+        classes=self.y.flatten()[k_neighbors]#(m,k)
+        return np.apply_along_axis(self.count,1,classes)#(m,)
+
+    def count(self,v):
+        vals,cnts=np.unique(v,return_counts=True)
+        return vals[np.argmax(cnts)]
 
 if __name__ == '__main__':
-    X_Train1 = np.random.normal(1,0.5,(100,2))
-    X_Train2 = np.random.normal(-1,0.5,(100,2))
-    y_Train1 = np.ones((100,1))
-    y_Train2 = np.zeros((100,1))
-    X_train = np.concatenate((X_Train1,X_Train2),axis=0)
-    y_train = np.concatenate((y_Train1,y_Train2),axis=0)
-    model = KNN(3)
-    model.train(X_train,y_train)
-
-
+    X1 = np.random.normal((1,1),1,(50,2))
+    X2 = np.random.normal((-1,-1),1,(50,2))
+    y1 = np.ones((50,1))
+    y2 = np.zeros((50,1))
+    X = np.concatenate((X1,X2),axis=0)
+    y = np.concatenate((y1,y2),axis=0)
+    model = KNN(4,X,y)
     X_test = np.array([[1,1],[-1,-1]])
-    preds = model.predict(X_test)
-
-
-    X_draw = np.concatenate((X_train,X_test),axis=0)
-    y_draw = np.concatenate((y_train,preds),axis=0)
-    plt.scatter(X_draw[:,0],X_draw[:,1],c=y_draw.flatten())
-
-
+    preds = np.expand_dims(model.predict(X_test),1)
+    X_plot = np.concatenate((X,X_test),axis=0)
+    y_plot = np.concatenate((y,preds),axis=0)
+    plt.scatter(X_plot[:,0],X_plot[:,1],c=y_plot.flatten())
     plt.scatter(X_test[:,0],X_test[:,1],marker='x')
     plt.show()
-
 
