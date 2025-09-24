@@ -12,12 +12,19 @@ class Codec:
         
         :type root: TreeNode
         :rtype: str
-        """
+        """     
+        serialized=[]
+        self.serialize_recur(root,serialized)
+        return ' '.join(serialized)
+
+    def serialize_recur(self,root,serialized):
         if not root:
-            return '#'
-        l = self.serialize(root.left)
-        r = self.serialize(root.right)
-        return str(root.val)+' '+l+' '+r
+            serialized.append('#')
+            return
+        serialized.append(str(root.val))
+        self.serialize_recur(root.left,serialized)
+        self.serialize_recur(root.right,serialized)
+        
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -25,22 +32,20 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        self.pos=-1
-        data = data.split(' ')
-        return self.deserialize_recur(data)
-
-    def deserialize_recur(self,data):
+        serialized = data.split(' ')
+        self.pos=0
+        return self.deserialize_recur(serialized)
+    
+    def deserialize_recur(self,serialized):
+        # 11 12 # # 13 # #
+        cur = serialized[self.pos]
         self.pos+=1
-        if data[self.pos]=='#':
+        if cur =='#':
             return None
-        root = TreeNode(data[self.pos])
-        l = self.deserialize_recur(data)
-        r = self.deserialize_recur(data)
-        root.left = l
-        root.right = r
-        return root
-        
-
+        node = TreeNode(int(cur))
+        node.left=self.deserialize_recur(serialized)
+        node.right=self.deserialize_recur(serialized)
+        return node
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
 # deser = Codec()
