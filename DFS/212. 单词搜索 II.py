@@ -2,14 +2,14 @@ class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         trie = self.build_trie(words)
         m,n = len(board),len(board[0])
-        res = set()
+        res = []
         path = []
         visited = [[False]*n for _ in range(m)]
         for i in range(m):
             for j in range(n):
                 if board[i][j] in trie:
                     self.dfs(board,i,j,m,n,trie[board[i][j]],res,path,visited)
-        return list(res)
+        return res
     
     def dfs(self,board,i,j,m,n,cur,res,path,visited):
         if visited[i][j]:
@@ -21,7 +21,8 @@ class Solution:
             if 0<=i+gi<m and 0<=j+gj<n and board[i+gi][j+gj] in cur:
                 self.dfs(board,i+gi,j+gj,m,n,cur[board[i+gi][j+gj]],res,path,visited)
         if 'is_word' in cur:
-            res.add(''.join(path))
+            res.append(''.join(path))
+            cur.pop('is_word')
         visited[i][j]=False
         path.pop()
     
