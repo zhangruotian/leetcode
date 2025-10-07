@@ -8,14 +8,13 @@
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         cur = root
-        while cur:
-            if p.val<cur.val and q.val<cur.val:
-                cur = cur.left
-            elif p.val>cur.val and q.val>cur.val:
+        while True:
+            if cur.val<min(p.val,q.val):
                 cur = cur.right
+            elif cur.val>max(p.val,q.val):
+                cur = cur.left
             else:
-                break
-        return cur
+                return cur
 
 # search的过程中，在前面几个node时，p和q的决策是一致的（都要往左，都要往右）。第一次p和q要分开的时候，就是我们要找的最近公共祖先。
 # 这里注意要用elif，以防同一个loop运行两个分支。上面改了cur，下面要用cur的时候cur以及变了。
