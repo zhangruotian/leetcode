@@ -3,27 +3,26 @@ class Solution:
         m,n = len(board),len(board[0])
         for i in range(m):
             for j in range(n):
-                if board[i][j]==word[0] and self.dfs(board,word,i,j,m,n,0):
+                if self.dfs(board,word,m,n,i,j,0):
                     return True
         return False
     
-    def dfs(self,board,word,i,j,m,n,pos):
-        if pos>=len(word):
+    def dfs(self,board,word,m,n,i,j,w_i):
+        if w_i==len(word):
             return True
         if i<0 or i>=m or j<0 or j>=n:
             return False
-        if word[pos]!=board[i][j]:
+        if board[i][j]=='visited':
             return False
-        if board[i][j]=='1':
+        if word[w_i]!=board[i][j]:
             return False
-        char = board[i][j]
-        board[i][j] = '1'
-        directions = [(-1, 0), (1, 0), (0, 1), (0, -1)]
-        for di, dj in directions:
-            next_i, next_j = i + di, j + dj
-            if self.dfs(board,word,next_i,next_j,m,n,pos+1):
+        directions = [(-1,0),(1,0),(0,-1),(0,1)]
+        val = board[i][j]
+        board[i][j] = 'visited'
+        for di,dj in directions:
+            if self.dfs(board,word,m,n,i+di,j+dj,w_i+1):
                 return True
-        board[i][j] = char
+        board[i][j] = val
         return False
         
 # 主逻辑（exist 方法）：
@@ -32,7 +31,7 @@ class Solution:
 
 # DFS 递归逻辑（dfs 方法）：
 # 1.边界检查：跳出越界的位置。
-# 2.访问检查：当前字符已经访问（标记为 #）则跳过。
+# 2.访问检查：当前字符已经访问则跳过。
 # 3.字符不匹配：直接返回 False。
 # 4.字符匹配且是最后一个字符：说明单词找到了，返回 True。
 # 5.递归搜索四个方向：上、下、左、右。
