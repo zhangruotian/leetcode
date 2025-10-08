@@ -21,6 +21,6 @@ class Solution:
             visited[i] = False
 
 #与39题不同之处：
-#不能重复使用candidates里面的元素，因此self.backTrack(candidates,target-candidates[i],path,res,i+1,visited) i+1保证下层的决策不包含上个元素
+#不能重复使用candidates里面的元素，因此self.dfs(candidates,target-candidates[i],path,res,i+1,visited) i+1保证下层的决策不包含上个元素
 # candidates中有重复 ，所以排序后使用visited跳过
 # [1 2 5 2]找和为5的，第二个2不能回头取1(会与1 2重复)因此与39题一样用index保证只能往后取。
