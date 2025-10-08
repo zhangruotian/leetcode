@@ -26,3 +26,26 @@ class Solution:
             l+=1
             r-=1
         return True
+
+
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        if len(s)==0:
+            return [[]]
+        res = []
+        for i in range(len(s)):
+            sub_s = s[:i+1]
+            if self.is_palindrome(sub_s):
+                palindromes = self.partition(s[i+1:])
+                for i in range(len(palindromes)):
+                    res.append([sub_s]+palindromes[i])
+        return res
+    
+    def is_palindrome(self,s):
+        l,r = 0,len(s)-1
+        while l<r:
+            if s[l]!=s[r]:
+                return False
+            l+=1
+            r-=1
+        return True
