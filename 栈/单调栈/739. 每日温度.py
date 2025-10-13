@@ -4,11 +4,10 @@ class Solution:
         res = [0]*n
         stack = []
         for i in range(n):
-            while stack and stack[-1][1]<temperatures[i]:
-                popped_i,popped_t = stack.pop()
+            while stack and stack[-1][0]<temperatures[i]:
+                _,popped_i = stack.pop()
                 res[popped_i] = i-popped_i
-            stack.append((i,temperatures[i]))
+            stack.append((temperatures[i],i))
         return res
 
 #单调栈
-#https://www.youtube.com/watch?v=d4FvlTzzWjQ
