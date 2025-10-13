@@ -6,12 +6,12 @@ class Solution:
         q = deque()
         res = []
         for i in range(len(nums)):
-            if q and q[0][1]<=i-k:
-                q.popleft()
-            while q and q[-1][0]<=nums[i]:
+            while q and q[-1][1]<=nums[i]:
                 q.pop()
-            q.append((nums[i],i))
-            if i+1>=k:
-                res.append(q[0][0])
+            q.append((i,nums[i]))
+            if q[0][0]+k<=i:
+                q.popleft()
+            if i>=k-1:
+                res.append(q[0][1])
         return res
         
