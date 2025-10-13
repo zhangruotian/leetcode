@@ -11,7 +11,8 @@ class Solution:
             res+=count[prefix_sum[i]-k]
             count[prefix_sum[i]]+=1
         return res
-# prefix sum + hashmap    
+# prefix sum + hashmap 
+# 跟two sum那题一样，只不过是减法
 
 
   
