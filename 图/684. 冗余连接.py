@@ -30,24 +30,22 @@ class Solution:
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         parents = list(range(len(edges)+1))
-        for node1,node2 in edges:
-            is_united=self.union(parents,node1,node2)
-            if not is_united:
-                return [node1,node2]
-
-    def find(self,parents,index):
-        if parents[index]==index:
-            return index 
-        root = self.find(parents,parents[index])
-        parents[index] = root
-        return root
+        for s,e in edges:
+            united = self.union(parents,s,e)
+            if not united:
+                return [s,e]
     
-    def union(self,parents,index1,index2):
-        root1 = self.find(parents,index1)
-        root2 = self.find(parents,index2)
-        if root1==root2:
+    def find(self,parents,node):
+        if parents[node]==node:
+            return node
+        return self.find(parents,parents[node])
+    
+    def union(self,parents,node1,node2):
+        parent1 = self.find(parents,node1)
+        parent2 = self.find(parents,node2)
+        if parent1==parent2:
             return False
-        parents[root1]=root2 
+        parents[parent1] = parent2
         return True
 # union find并查集 https://www.youtube.com/watch?v=VJnUwsE4fWA 
 # https://leetcode.cn/problems/redundant-connection/solutions/181093/tong-su-jiang-jie-bing-cha-ji-bang-zhu-xiao-bai-ku/
