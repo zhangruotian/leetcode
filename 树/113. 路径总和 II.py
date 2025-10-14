@@ -6,40 +6,16 @@
 #         self.right = right
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
-        res, path = [],[]
-        self.dfs(root,res,path,targetSum)
+        path,res = [],[]
+        self.dfs(root,path,res,targetSum)
         return res
     
-    def dfs(self,root,res,path,targetSum):
+    def dfs(self,root,path,res,target):
         if not root:
-            return 
-            
+            return
         path.append(root.val)
-        if sum(path) == targetSum and not root.left and not root.right:
+        if not root.left and not root.right and root.val==target:
             res.append(path[:])
-        self.dfs(root.left,res,path,targetSum)
-        self.dfs(root.right,res,path,targetSum)
+        self.dfs(root.left,path,res,target-root.val)
+        self.dfs(root.right,path,res,target-root.val)
         path.pop()
-
-# 使用path记录，dfs递归过程中不产生额外的内存
-
-
-class Solution:
-    def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
-        if not root:
-            return []
-        if not root.left and not root.right:
-            if root.val != sum:
-                return []
-            else:
-                return [[root.val]]
-        res=[]
-        
-        l=self.pathSum(root.left,sum-root.val)
-        res+=[[root.val]+i for i in l]
-        
-        r=self.pathSum(root.right,sum-root.val)
-        res+=[[root.val]+i for i in r]
-    
-        return res
-# 内存占用多
