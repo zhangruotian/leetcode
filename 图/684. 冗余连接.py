@@ -47,5 +47,4 @@ class Solution:
             return False
         parents[parent1] = parent2
         return True
-# union find并查集 https://www.youtube.com/watch?v=VJnUwsE4fWA 
 # https://leetcode.cn/problems/redundant-connection/solutions/181093/tong-su-jiang-jie-bing-cha-ji-bang-zhu-xiao-bai-ku/
