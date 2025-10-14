@@ -5,18 +5,22 @@
 #         self.left = None
 #         self.right = None
 
+from collections import deque
 class Solution:
-    def rightSideView(self, root: TreeNode) -> List[int]:
-        res=[]
-        self.DFS(root,0,res)
-        return res
-
-    def DFS(self,root,level,res):
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
-            return
-        if len(res)<=level:
-            res.append(0)
-        res[level]=root.val
-        self.DFS(root.left,level+1,res)
-        self.DFS(root.right,level+1,res)
-# 与102相同 层序遍历找最后元素
+            return []
+        q = deque()
+        q.append(root)
+        res = []
+        while q:
+            n = len(q)
+            for i in range(n):
+                popped = q.popleft()
+                if i==n-1:
+                    res.append(popped.val)
+                if popped.left:
+                    q.append(popped.left)
+                if popped.right:
+                    q.append(popped.right)
+        return res
