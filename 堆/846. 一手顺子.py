@@ -17,5 +17,5 @@ class Solution:
                     return False
                 counter[start+i]-=1
         return True
-# min heap确定每个group的start value（当前剩余卡的最小值）， dict/counter 查询是否存在构成连续所需要的卡。
+# min heap确定每个group的start value（当前剩余卡的最小值）
 # O(nlogn)
